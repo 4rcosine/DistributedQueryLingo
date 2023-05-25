@@ -276,11 +276,16 @@ class query_plan(object):
 			
 	#Funzione di calcolo assegnatario ed estensione del queryplan (integrazione Lingo)
 	def assign_and_extend(self):
+		print("Compiling input for Lingo...")
 		f_handle = open('base_lingo.ltf',mode='r', encoding='utf-8')
 		base_script = f_handle.read()
 		f_handle.close()
 
-		base_script = base_script.replace("§output_file§", "C:\\Users\\Giobberto\\source\\repos\\DistributedQueryUI\\DistributedQueryUI\\output_script.ltf")
+		app_path = utils.get_cur_dir()
+		input_path = os.path.join(app_path, "input_script.ltf")
+		output_path = os.path.join(app_path, "output_script.ltf")
+
+		base_script = base_script.replace("§output_file§", output_path)
 		
 		attr_list = ""
 		attr_size = ""
@@ -535,21 +540,23 @@ class query_plan(object):
 		base_script = base_script.replace("§base_impl§", base_impl)
 		
 		#Scrivo il file da dare in input a lingo
-		in_script = open("./input_script.ltf", "w")
+		in_script = open(input_path, "w")
+		
 		in_script.write(base_script)
 		in_script.close()
 
-		if os.path.exists("C:\\Users\\Giobberto\\source\\repos\\DistributedQueryUI\\DistributedQueryUI\\output_script.ltf"):
-			os.remove("C:\\Users\\Giobberto\\source\\repos\\DistributedQueryUI\\DistributedQueryUI\\output_script.ltf")
+		if os.path.exists(output_path):
+			os.remove(output_path)
 
 		#Eseguo lingo con i parametri
+		print("Waiting for Lingo computation...")
 		if platform.system() == "Darwin":
 			os.system("open " + "")
 		else:
-			subprocess.Popen([utils.lingo_path, "C:\\Users\\Giobberto\\source\\repos\\DistributedQueryUI\\DistributedQueryUI\\input_script.ltf"]).wait()
+			subprocess.Popen([utils.lingo_path, input_path], stdout=subprocess.DEVNULL).wait()
 		
 		#Lettura dell'output da Lingo
-		f_handle = open("C:\\Users\\Giobberto\\source\\repos\\DistributedQueryUI\\DistributedQueryUI\\output_script.ltf", "r")
+		f_handle = open(output_path, "r")
 
 		data_line = False
 		output_data = []	#Lista di tre stringhe, una con gli assegnamenti, una con gli attributi in chiaro e una con gli attributi cifrati

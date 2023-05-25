@@ -20,42 +20,54 @@
 	};
 
 	nodeUNODE = {
-innerHTML : "<div class='box_left'><span class='as'>U</span>, Y</div><div class='box_center '><p class='op'>result to user</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: P, T<br/><i>i</i>: D, P, T<br/><i>eq</i>: {S, C}</div></div>"
+innerHTML : "<div class='box_left'><span class='as'>U</span>, C</div><div class='box_center '><p class='op'>result to user</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: TECH<br/><i>i</i>:  <span class='enc_att'>TECH, FAIL, COST, KIND</span><br/><i>eq</i>: {ID, PROD}</div></div>"
 };
 
-node1 = {
-parent: nodeUNODE, innerHTML : "<div class='box_left'><span class='as'>U</span>, Y</div><div class='box_center '><p class='op'>selection on {P}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: P, T<br/><i>i</i>: D, P, T<br/><i>eq</i>: {S, C}</div></div>"
+nodeN10 = {
+parent: nodeUNODE, innerHTML : "<div class='box_left'><span class='as'>C</span>, U, G, X, Y</div><div class='box_center '><p class='op'>projection on {TECH}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: TECH<br/><i>i</i>:  <span class='enc_att'>TECH, FAIL, COST, KIND</span><br/><i>eq</i>: {ID, PROD}</div></div><br/><div class='box_down'><span class='enc'>TECH</span></div>"
 };
 
-node2 = {
-parent: node1, innerHTML : "<div class='box_left'><span class='as'>U</span>, Y, X, H, Z</div><div class='box_center '><p class='op'>avg on {P}, grouping on {T}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: P, T<br/><i>i</i>: D, T<br/><i>eq</i>: {S, C}</div></div>"
+nodeN9 = {
+parent: nodeN10, innerHTML : "<div class='box_left'><span class='as'>X</span>, U, G, C, Y</div><div class='box_center '><p class='op'>selection on {COST}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>:  <span class='enc_att'>TECH, COST</span><br/><i>i</i>:  <span class='enc_att'>TECH, FAIL, COST, KIND</span><br/><i>eq</i>: {ID, PROD}</div></div>"
 };
 
-node3 = {
-parent: node2, innerHTML : "<div class='box_left'><span class='as'>U</span>, Y, X, H, Z</div><div class='box_center '><p class='op'>join on {S, C}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: S, D, T, C, P<br/><i>i</i>: D<br/><i>eq</i>: {S, C}</div></div>"
+nodeN8 = {
+parent: nodeN9, innerHTML : "<div class='box_left'><span class='as'>X</span>, U, G, C, Y</div><div class='box_center '><p class='op'>sum on {COST}, grouping on {TECH}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>:  <span class='enc_att'>TECH, COST</span><br/><i>i</i>:  <span class='enc_att'>TECH, FAIL, KIND</span><br/><i>eq</i>: {ID, PROD}</div></div>"
 };
 
-node4 = {
-parent: node3, innerHTML : "<div class='box_left'><span class='as'>U</span>, Y, X, H, Z, I</div><div class='box_center '><p class='op'>selection on {D}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: S, D, T<br/><i>i</i>: D<br/><i>eq</i>: </div></div>"
+nodeN7 = {
+parent: nodeN8, innerHTML : "<div class='box_left'><span class='as'>X</span>, U, G, C, Y</div><div class='box_center '><p class='op'>join on {ID, PROD}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>:  <span class='enc_att'>FAIL, ID, TECH, KIND, PROD, COST</span><br/><i>i</i>:  <span class='enc_att'>FAIL, KIND</span><br/><i>eq</i>: {ID, PROD}</div></div>"
 };
 
-node7 = {
-parent: node3, innerHTML : "<div class='box_left'><span class='as'>I</span></div><div class='box_center  leaf'><p class='op'>INSURANCE (C, P)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: C, P<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+nodeN5 = {
+parent: nodeN7, innerHTML : "<div class='box_up'><span class='enc'>ID, TECH</span></div><br/><div class='box_left'><span class='as'>T</span>, U, G, C, X, Y</div><div class='box_center '><p class='op'>selection on {KIND}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: ID, TECH <span class='enc_att'>KIND</span><br/><i>i</i>:  <span class='enc_att'>KIND</span><br/><i>eq</i>: </div></div>"
 };
 
-node5 = {
-parent: node4, innerHTML : "<div class='box_left'><span class='as'>H</span></div><div class='box_center '><p class='op'>projection on {S, D, T}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: S, D, T<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+nodeN6 = {
+parent: nodeN7, innerHTML : "<div class='box_up'><span class='enc'>COST, PROD</span></div><br/><div class='box_left'><span class='as'>G</span>, U, T, C, X, Y</div><div class='box_center '><p class='op'>selection on {FAIL}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: COST, PROD <span class='enc_att'>FAIL</span><br/><i>i</i>:  <span class='enc_att'>FAIL</span><br/><i>eq</i>: </div></div>"
 };
 
-node6 = {
-parent: node5, innerHTML : "<div class='box_left'><span class='as'>H</span></div><div class='box_center  leaf'><p class='op'>HOSPITAL (S, D, B, T)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: S, D, B, T<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+nodeN3 = {
+parent: nodeN5, innerHTML : "<div class='box_up'><span class='enc'>KIND</span></div><br/><div class='box_left'><span class='as'>T</span></div><div class='box_center '><p class='op'>projection on {ID, TECH, KIND}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: ID, TECH, KIND<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+};
+
+nodeN4 = {
+parent: nodeN6, innerHTML : "<div class='box_up'><span class='enc'>FAIL</span></div><br/><div class='box_left'><span class='as'>G</span></div><div class='box_center '><p class='op'>projection on {COST, FAIL, PROD}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: COST, FAIL, PROD<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+};
+
+nodeN1 = {
+parent: nodeN3, innerHTML : "<div class='box_left'><span class='as'>T</span></div><div class='box_center  leaf'><p class='op'>ANAGRAFICA (ID, TECH, KIND, SUPERVISOR)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: ID, TECH, KIND, SUPERVISOR<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+};
+
+nodeN2 = {
+parent: nodeN4, innerHTML : "<div class='box_left'><span class='as'>G</span></div><div class='box_center  leaf'><p class='op'>TEST (FAIL, TEST, DATE, PROD, CODE, COST, VIDEO)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: FAIL, TEST, DATE, PROD, CODE, COST, VIDEO<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
 };
 
 
 
 
 	ch = [
-		config, nodeUNODE, node1, node2, node3, node4, node7, node5, node6
+		config, nodeUNODE, nodeN10, nodeN9, nodeN8, nodeN7, nodeN5, nodeN6, nodeN3, nodeN4, nodeN1, nodeN2
 	];
 
 	function calcRow() {
@@ -86,7 +98,12 @@ parent: node5, innerHTML : "<div class='box_left'><span class='as'>H</span></div
 
 	</script>
 	<div id="tree-simple" style="width:100%; min-width: 400px; height: auto"> </div>
-	<div class="kes_cont" id="kes_separator"><span class="kes"><b>Key Encryption Sets</b><ul></ul></span></div>
+	<div class="kes_cont" id="kes_separator"><span class="kes"><b>Key Encryption Sets</b><ul><li>{ID, PROD} - Key to be given to {G, T}</li>
+<li>{KIND} - Key to be given to {T}</li>
+<li>{FAIL} - Key to be given to {G}</li>
+<li>{TECH} - Key to be given to {C, T}</li>
+<li>{COST} - Key to be given to {G}</li>
+</ul></span></div>
 	<script>
 		var my_chart = new Treant(ch);
 		calcRow();

@@ -16,11 +16,14 @@ pri_dict = {}
 names_set = dict()
 
 #Lettura file configurazioni
-conf_json = open('conf.json')
 lingo_path_file = open('lingo_path.conf')
 
 #Controllo esistenza lingo e valorizzazione var globale
 utils.lingo_path = lingo_path_file.readline()
+
+print("--------------------------------------------")
+print("    Secure Query Distribution Calculator    ")
+print("--------------------------------------------")
 
 if not os.path.exists(utils.lingo_path):
 	print("An error occurred during the loading of the configuration: lingo executable not found at path '" + utils.lingo_path + "'")
@@ -28,23 +31,33 @@ if not os.path.exists(utils.lingo_path):
 	sys.exit(-1)
 
 #Richiesta input
-print("The following configurations are available: ")
-configs = json.load(conf_json)
-k = 1
-for confs in configs:
-	print("\n\t" + str(k) + ") " + confs["conf_name"], end='')
-	k += 1
+#print("The following configurations are available: ")
+#configs = json.load(conf_json)
+#k = 1
+#for confs in configs:
+#	print("\n\t" + str(k) + ") " + confs["conf_name"], end='')
+#	k += 1
+#
+#scelta = 0
+#while not (int(scelta) >= 1 and int(scelta) < k ):
+#	scelta = utils.parseUint(input("\n\nPlease choose one configuration (type a number from 1 to " + str(k-1) + "): "))
+#
+#	if not (int(scelta) >= 1 and int(scelta) < k ):
+#		print("Invalid option.")
 
-scelta = 0
-while not (int(scelta) >= 1 and int(scelta) < k ):
-	scelta = utils.parseUint(input("\n\nPlease choose one configuration (type a number from 1 to " + str(k-1) + "): "))
+curr_dir = utils.get_cur_dir()
 
-	if not (int(scelta) >= 1 and int(scelta) < k ):
-		print("Invalid option.")
+conf_json = os.path.join(curr_dir, sys.argv[1]) if not os.path.isabs(sys.argv[1]) else sys.argv[1]
+
+if not os.path.exists(conf_json):
+	print("An error occurred during the loading of the configuration: configuration file not found at path '" + conf_json + "'")
+	input()
+	sys.exit(-1)
 
 #Leggo i dati dalla configurazione
 try:
-	config = configs[(scelta-1)]
+	config = json.load(open(conf_json))
+	print("\r\nConfgiuration loaded: " + config["conf_name"])
 	#Per ogni tabella nelle configurazioni leggo relativi file descrittivi e di autorizzazioni
 	for table in config["tables"]:
 		f1 = open(table["table_file"])

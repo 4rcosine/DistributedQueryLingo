@@ -1,0 +1,9 @@
+{
+	"conf_name" : "Esempio 1",
+	"tables" : [
+		{"table_file" : "conf_1/hosp_ex1.json", "auth_file" : "conf_1/auth_hosp_ex1.json" },
+		{"table_file" : "conf_1/ins_ex1.json", "auth_file" : "conf_1/auth_ins_ex1.json" }
+	],
+	"subject_file" : "conf_1/subjects_ex1.json",
+	"query_file" : "conf_1/queryplan_ex1.json"
+}

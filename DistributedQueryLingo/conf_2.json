@@ -1,0 +1,9 @@
+{
+	"conf_name" : "Esempio 2",
+	"tables" : [
+		{"table_file" : "conf_2/ap.json", "auth_file" : "conf_2/auth_ap.json" },
+		{"table_file" : "conf_2/cdr.json", "auth_file" : "conf_2/auth_cdr.json" }
+	],
+	"subject_file" : "conf_2/priority.json",
+	"query_file" : "conf_2/queryplan.json"
+}

@@ -11,6 +11,9 @@
     <OutputPath>.</OutputPath>
     <Name>DistributedQueryLingo</Name>
     <RootNamespace>DistributedQueryLingo</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>.\conf_3.json</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,19 +51,21 @@
     <Content Include="base_html\vendor\perfect-scrollbar\perfect-scrollbar.js" />
     <Content Include="base_html\vendor\raphael.js" />
     <Content Include="base_lingo.ltf" />
-    <Content Include="conf.json" />
+    <Content Include="conf_1.json" />
     <Content Include="conf_1\auth_hosp_ex1.json" />
     <Content Include="conf_1\auth_ins_ex1.json" />
     <Content Include="conf_1\hosp_ex1.json" />
     <Content Include="conf_1\ins_ex1.json" />
     <Content Include="conf_1\queryplan_ex1.json" />
     <Content Include="conf_1\subjects_ex1.json" />
+    <Content Include="conf_2.json" />
     <Content Include="conf_2\ap.json" />
     <Content Include="conf_2\auth_ap.json" />
     <Content Include="conf_2\auth_cdr.json" />
     <Content Include="conf_2\cdr.json" />
     <Content Include="conf_2\priority.json" />
     <Content Include="conf_2\queryplan.json" />
+    <Content Include="conf_3.json" />
     <Content Include="conf_3\auth_r1.json" />
     <Content Include="conf_3\auth_r2.json" />
     <Content Include="conf_3\queryplan.json" />

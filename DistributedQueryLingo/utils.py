@@ -1,6 +1,7 @@
 #Modulo delle Utilities (funzioni ad uso comune)
 from email import utils
 import os
+import sys
 import platform
 import problem_info
 
@@ -20,6 +21,15 @@ ope_name = {
 		"decr" : "decryption",
 		"star" : "result to user"
 	}
+
+def get_cur_dir():
+	# determine if application is a script file or frozen exe
+	if getattr(sys, 'frozen', False):
+		application_path = os.path.dirname(sys.executable)
+	elif __file__:
+		application_path = os.path.dirname(__file__)
+
+	return application_path
 
 def upper_set(cset):
 	dummy = set()
