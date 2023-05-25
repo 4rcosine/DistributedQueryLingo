@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="Treant.css" type="text/css"/>
+	<!-- javascript -->
+	<script src="vendor/jquery.min.js"></script>
+    <script src="vendor/raphael.js"></script>
+    <script src="Treant.js"></script>
+</head>
+<body>
+	<script>
+	config = {
+		container: "#tree-simple",
+		connectors: {
+			type: "straight"
+		}
+	};
+
+	nodeUNODE = {
+innerHTML : "<div class='box_center '><p class='op'>result to user on set()</p></div>"
+};
+
+nodeN10 = {
+parent: nodeUNODE, innerHTML : "<div class='box_center '><p class='op'>projection on {TECH}</p></div>"
+};
+
+nodeN9 = {
+parent: nodeN10, innerHTML : "<div class='box_center '><p class='op'>selection on {COST}</p></div>"
+};
+
+nodeN8 = {
+parent: nodeN9, innerHTML : "<div class='box_center '><p class='op'>sum on {COST}, grouping on {TECH}</p></div>"
+};
+
+nodeN7 = {
+parent: nodeN8, innerHTML : "<div class='box_center '><p class='op'>join on {PROD, ID}</p></div>"
+};
+
+nodeN5 = {
+parent: nodeN7, innerHTML : "<div class='box_center '><p class='op'>selection on {KIND}</p></div>"
+};
+
+nodeN6 = {
+parent: nodeN7, innerHTML : "<div class='box_center '><p class='op'>selection on {FAIL}</p></div>"
+};
+
+nodeN3 = {
+parent: nodeN5, innerHTML : "<div class='box_center '><p class='op'>projection on {TECH, KIND, ID}</p></div>"
+};
+
+nodeN4 = {
+parent: nodeN6, innerHTML : "<div class='box_center '><p class='op'>projection on {PROD, FAIL, COST}</p></div>"
+};
+
+nodeN1 = {
+parent: nodeN3, innerHTML : "<div class='box_center  leaf'><p class='op'>ANAGRAFICA (TECH, KIND, ID, SUPERVISOR)</p></div>"
+};
+
+nodeN2 = {
+parent: nodeN4, innerHTML : "<div class='box_center  leaf'><p class='op'>TEST (CODE, PROD, VIDEO, COST, FAIL, DATE, TEST)</p></div>"
+};
+
+
+
+
+	ch = [
+		config, nodeUNODE, nodeN10, nodeN9, nodeN8, nodeN7, nodeN5, nodeN6, nodeN3, nodeN4, nodeN1, nodeN2
+	];
+
+	function calcRow() {
+		var nodi = document.getElementsByClassName("node");
+		var minLeft = parseInt(window.getComputedStyle(nodi[0]).left.replace("px", ""))
+		//Trovo il left minimo
+		for(var i = 0; i < nodi.length; i++) {
+			var tmp = parseInt(window.getComputedStyle(nodi[i]).left.replace("px", ""));
+			if (minLeft > tmp){
+				minLeft = tmp;
+			}
+		}
+
+		//Trovo il left massimo
+		var maxLeft = parseInt(window.getComputedStyle(nodi[0]).left.replace("px", "")) + parseInt(window.getComputedStyle(nodi[0]).width.replace("px", ""));
+		for(var i = 0; i < nodi.length; i++) {
+			var tmp = parseInt(window.getComputedStyle(nodi[i]).left.replace("px", "")) + parseInt(window.getComputedStyle(nodi[i]).width.replace("px", ""));
+			if(maxLeft < tmp) {
+				maxLeft = tmp;
+			}
+		}
+
+
+		var larghTree = maxLeft - minLeft;
+		document.getElementById("kes_separator").style.width = larghTree + "px";
+		document.getElementById("kes_separator").style.marginLeft = minLeft + "px";
+	}
+
+	</script>
+	<div id="tree-simple" style="width:100%; min-width: 400px; height: auto"> </div>
+	
+	<script>
+		var my_chart = new Treant(ch);
+		calcRow();
+	</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+	"name" : "CDR",
+	"fullName" : "CallDetailRecord",
+	"owner" : "C",
+	"attributes" : ["C", "I", "H", "T", "D"]
+}

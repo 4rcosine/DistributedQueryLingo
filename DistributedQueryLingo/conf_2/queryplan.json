@@ -1,0 +1,11 @@
+{
+	"1" : { "op_type" : "sel_val", "op_detail" : "", "set_attr" : ["D"], "set_oper" : [], "set_attrplain" : ["D"], "parent_id" : 0, "order" : 0},
+	"2" : { "op_type" : "gby", "op_detail" : "avg", "set_attr" : ["A"], "set_oper" : ["D"], "set_attrplain" : [], "parent_id" : 1, "order" : 0},
+	"3" : { "op_type" : "join", "op_detail" : "", "set_attr" : ["A", "I"], "set_oper" : [], "set_attrplain" : [], "parent_id" : 2, "order" : 0},
+	"4" : { "op_type" : "sel_val", "op_detail" : "", "set_attr" : ["N"], "set_oper" : [], "set_attrplain" : [], "parent_id" : 3, "order" : 0},
+	"5" : { "op_type" : "sel_val", "op_detail" : "", "set_attr" : ["T"], "set_oper" : [], "set_attrplain" : [], "parent_id" : 3, "order" : 1},
+	"6" : { "op_type" : "proj", "op_detail" : "", "set_attr" : ["A", "N"], "set_oper" : [], "set_attrplain" : [], "parent_id" : 4, "order" : 0},
+	"7" : { "op_type" : "proj", "op_detail" : "", "set_attr" : ["I", "T", "D"], "set_oper" : [], "set_attrplain" : [], "parent_id" : 5, "order" : 0},
+	"8" : { "op_type" : "base", "op_detail" : "", "set_attr" : ["A", "N", "P", "M"], "set_oper" : ["AP"], "set_attrplain" : [], "parent_id" : 6, "order" : 0},
+	"9" : { "op_type" : "base", "op_detail" : "", "set_attr" : ["C", "I", "H", "T", "D"], "set_oper" : ["CDR"], "set_attrplain" : [], "parent_id" : 7, "order" : 0} 
+}

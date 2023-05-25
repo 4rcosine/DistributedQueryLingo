@@ -1,0 +1,33 @@
+{
+	"permissions" : {
+		"T" : {
+			"plain" : ["id", "kind", "tech", "supervisor"],
+			"encr" : []
+		},
+		
+		"G" : {
+			"plain" : ["id", "kind", "supervisor"],
+			"encr" : ["tech"]
+		},
+		
+		"C" : {
+			"plain" : ["tech"],
+			"encr" : ["id", "kind", "supervisor"]
+		},
+		
+		"X" : {
+			"plain" : ["supervisor"],
+			"encr" : ["id", "kind", "tech"]
+		},
+		
+		"Y" : {
+			"plain" : ["kind", "supervisor"],
+			"encr" : ["id", "tech"]
+		},
+
+		"U": {
+			"plain": ["id", "kind", "tech", "supervisor"],
+			"encr": []
+		}
+	}
+}

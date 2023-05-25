@@ -1,0 +1,9 @@
+{
+	"1" : { "op_type" : "sel_val", "op_detail" : "", "set_attr" : ["P"], "set_oper" : [], "set_attrplain" : ["P"], "parent_id" : "0", "order" : 0, "in_card":  100, "out_card" : 100, "op_cost" :  1, "na_size" :  1 },
+	"2" : { "op_type" : "gby", "op_detail" : "avg", "set_attr" : ["T"], "set_oper" : ["P"], "set_attrplain" : [], "parent_id" : "1", "order" : 0, "in_card":  100, "out_card" : 100, "op_cost" :  1, "na_size" :  1 },
+	"3" : { "op_type" : "join", "op_detail" : "", "set_attr" : ["S", "C"], "set_oper" : [], "set_attrplain" : [], "parent_id" : "2", "order" : 0, "in_card":  100, "out_card" : 100, "op_cost" :  1, "na_size" :  1 },
+	"4" : { "op_type" : "sel_val", "op_detail" : "", "set_attr" : ["D"], "set_oper" : [], "set_attrplain" : [], "parent_id" : "3", "order" : 0, "in_card":  100, "out_card" : 100, "op_cost" :  1, "na_size" :  1 },
+	"5" : { "op_type" : "proj", "op_detail" : "", "set_attr" : ["S", "D", "T"], "set_oper" : [], "set_attrplain" : [], "parent_id" : "4", "order" : 0, "in_card":  100, "out_card" : 100, "op_cost" :  1, "na_size" :  1 },
+	"6" : { "op_type" : "base", "op_detail" : "", "set_attr" : ["S", "B", "D", "T"], "set_oper" : ["hosp"], "set_attrplain" : [], "parent_id" : "5", "order" : 0, "in_card":  100, "out_card" : 100, "op_cost" :  1, "na_size" :  1 },
+	"7" : { "op_type" : "base", "op_detail" : "", "set_attr" : ["C", "P"], "set_oper" : ["ins"], "set_attrplain" : [], "parent_id" : "3", "order" : 1, "in_card":  100, "out_card" : 100, "op_cost" :  1, "na_size" :  1 } 
+}

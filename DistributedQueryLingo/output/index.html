@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="Treant.css" type="text/css"/>
+	<!-- javascript -->
+	<script src="vendor/jquery.min.js"></script>
+    <script src="vendor/raphael.js"></script>
+    <script src="Treant.js"></script>
+</head>
+<body>
+	<script>
+	config = {
+		container: "#tree-simple",
+		connectors: {
+			type: "straight"
+		}
+	};
+	
+	node1 = {
+innerHTML : "<div class='box_left'><span class='as'>Y</span>, U</div><div class='box_center '><p class='op'>selection on {P}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: P, T<br/><i>i</i>: D, P, T<br/><i>eq</i>: {S, C}</div></div><br/><div class='box_down'><span class='enc'>P</span></div>"
+};
+
+node2 = {
+parent: node1,innerHTML : "<div class='box_left'><span class='as'>X</span>, Y, H, Z, U</div><div class='box_center '><p class='op'>avg on {P}, grouping on {T}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: T <span class='enc_att'>P</span><br/><i>i</i>: D, T<br/><i>eq</i>: {S, C}</div></div>"
+};
+
+node3 = {
+parent: node2,innerHTML : "<div class='box_left'><span class='as'>X</span>, Y, H, Z, U</div><div class='box_center '><p class='op'>join on {S, C}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: D, T <span class='enc_att'>S, P, C</span><br/><i>i</i>: D<br/><i>eq</i>: {S, C}</div></div>"
+};
+
+node4 = {
+parent: node3,innerHTML : "<div class='box_left'><span class='as'>X</span>, I, Y, H, Z, U</div><div class='box_center '><p class='op'>selection on {D}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: D, T <span class='enc_att'>S</span><br/><i>i</i>: D<br/><i>eq</i>: </div></div>"
+};
+
+node5 = {
+parent: node4,innerHTML : "<div class='box_up'><span class='enc'>S</span></div><br/><div class='box_left'><span class='as'>H</span></div><div class='box_center '><p class='op'>projection on {S, D, T}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: D, T <span class='enc_att'>S</span><br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+};
+
+node6 = {
+parent: node5,innerHTML : "<div class='box_left'><span class='as'>H</span></div><div class='box_center  leaf'><p class='op'>Hospital (S, D, T, B)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: S, D, T, B<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+};
+
+node7 = {
+parent: node3,innerHTML : "<div class='box_up'><span class='enc'>P, C</span></div><br/><div class='box_left'><span class='as'>I</span></div><div class='box_center  leaf'><p class='op'>Insurance (P, C)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>:  <span class='enc_att'>P, C</span><br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+};
+
+
+	
+	
+	ch = [
+		config, node1, node2, node3, node4, node5, node6, node7
+	];
+	
+	function calcRow() {
+		var nodi = document.getElementsByClassName("node");
+		var minLeft = parseInt(window.getComputedStyle(nodi[0]).left.replace("px", ""))
+		//Trovo il left minimo
+		for(var i = 0; i < nodi.length; i++) {
+			var tmp = parseInt(window.getComputedStyle(nodi[i]).left.replace("px", ""));
+			if (minLeft > tmp){
+				minLeft = tmp;
+			}
+		}
+		
+		//Trovo il left massimo
+		var maxLeft = parseInt(window.getComputedStyle(nodi[0]).left.replace("px", "")) + parseInt(window.getComputedStyle(nodi[0]).width.replace("px", ""));
+		for(var i = 0; i < nodi.length; i++) {
+			var tmp = parseInt(window.getComputedStyle(nodi[i]).left.replace("px", "")) + parseInt(window.getComputedStyle(nodi[i]).width.replace("px", ""));
+			if(maxLeft < tmp) {
+				maxLeft = tmp;
+			}
+		}
+		
+		
+		var larghTree = maxLeft - minLeft;
+		document.getElementById("kes_separator").style.width = larghTree + "px";
+		document.getElementById("kes_separator").style.marginLeft = minLeft + "px";
+	}
+	
+	</script>
+	<div id="tree-simple" style="width:100%; min-width: 400px; height: auto"> </div>
+	<div class="kes_cont" id="kes_separator">
+		<span class="kes">
+			<b>Key Encryption Sets</b>
+			<ul>
+				<li>{S, C} - Key to be given to {I, H}</li>
+<li>{P} - Key to be given to {I, Y}</li>
+
+			</ul>
+		</span>
+	</div>
+	<script>
+	var my_chart = new Treant(ch);
+	calcRow();
+	</script>
+</body>
+</html>

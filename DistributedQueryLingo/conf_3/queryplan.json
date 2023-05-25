@@ -1,0 +1,176 @@
+{
+  "N1": {
+    "op_type": "base",
+    "op_detail": "",
+    "set_attr": [
+      "id",
+      "kind",
+      "tech",
+      "supervisor"
+    ],
+    "set_oper": [
+      "r1"
+    ],
+    "set_attrplain": [
+      "P"
+    ],
+    "parent_id": "N3",
+    "order": 0,
+    "in_card": 100,
+    "out_card": 100,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N2": {
+    "op_type": "base",
+    "op_detail": "",
+    "set_attr": [
+      "prod",
+      "test",
+      "date",
+      "fail",
+      "video",
+      "cost",
+      "code"
+    ],
+    "set_oper": [
+      "r2"
+    ],
+    "set_attrplain": [],
+    "parent_id": "N4",
+    "order": 0,
+    "in_card": 200,
+    "out_card": 200,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N3": {
+    "op_type": "proj",
+    "op_detail": "",
+    "set_attr": [
+      "id",
+      "kind",
+      "tech"
+    ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N5",
+    "order": 0,
+    "in_card": 100,
+    "out_card": 100,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N4": {
+    "op_type": "proj",
+    "op_detail": "",
+    "set_attr": [
+      "prod",
+      "fail",
+      "cost"
+    ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N6",
+    "order": 0,
+    "in_card": 200,
+    "out_card": 200,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N5": {
+    "op_type": "sel_val",
+    "op_detail": "",
+    "set_attr": [
+      "kind"
+    ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N7",
+    "order": 1,
+    "in_card": 100,
+    "out_card": 40,
+    "op_cost": 1,
+    "na_size": 2
+  },
+  "N6": {
+    "op_type": "sel_val",
+    "op_detail": "",
+    "set_attr": [
+      "fail"
+    ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N7",
+    "order": 0,
+    "in_card": 200,
+    "out_card": 50,
+    "op_cost": 1,
+    "na_size": 1
+  },
+  "N7": {
+    "op_type": "join",
+    "op_detail": "",
+    "set_attr": [
+      "id",
+      "prod"
+    ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N8",
+    "order": 0,
+    "in_card": 100,
+    "out_card": 100,
+    "op_cost": 6,
+    "na_size": 4
+  },
+  "N8": {
+    "op_type": "gby",
+    "op_detail": "sum",
+    "set_attr": [
+      "tech"
+    ],
+    "set_oper": [
+      "cost"
+    ],
+    "set_attrplain": [],
+    "parent_id": "N9",
+    "order": 0,
+    "in_card": 40,
+    "out_card": 10,
+    "op_cost": 5,
+    "na_size": 6
+  },
+  "N9": {
+    "op_type": "sel_val",
+    "op_detail": "",
+    "set_attr": [
+      "cost"
+    ],
+    "set_oper": [],
+    "set_attrplain": [
+     
+    ],
+    "parent_id": "N10",
+    "order": 0,
+    "in_card": 10,
+    "out_card": 5,
+    "op_cost": 1,
+    "na_size": 1
+  },
+  "N10": {
+    "op_type": "proj",
+    "op_detail": "",
+    "set_attr": [
+      "tech"
+    ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "0",
+    "order": 0,
+    "in_card": 5,
+    "out_card": 5,
+    "op_cost": 0,
+    "na_size": 0
+  }
+}

@@ -1,0 +1,8 @@
+{
+	"name": "ins",
+	"fullName": "Insurance",
+	"owner": "I",
+	"attributes": [ "C", "P" ],
+	"attr_sizes": [ 2, 2 ],
+	"attr_enc_eff": [ 2, 2 ]
+}

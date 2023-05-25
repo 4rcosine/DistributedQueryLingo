@@ -1,0 +1,33 @@
+{
+	"permissions": {
+		"T": {
+			"plain": [ "video", "date", "fail" ],
+			"encr": [ "prod", "cost", "code" ]
+		},
+
+		"G": {
+			"plain": [ "prod", "test", "date", "fail", "video", "cost", "code"],
+			"encr": []
+		},
+
+		"C": {
+			"plain": [ "video", "code", "date", "fail" ],
+			"encr": [ "prod", "cost" ]
+		},
+
+		"X": {
+			"plain": [ "date" ],
+			"encr": [ "prod", "video", "code", "cost", "fail" ]
+		},
+
+		"Y": {
+			"plain": [ "video", "code", "date" ],
+			"encr": [ "prod", "cost", "fail" ]
+		},
+
+		"U": {
+			"plain": [ "prod", "test", "date", "fail", "video", "cost", "code" ],
+			"encr": []
+		}
+	}
+}

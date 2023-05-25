@@ -1,0 +1,330 @@
+! Istruzioni: DA QUI COPIARE SENZA MODIFICHE;
+SET GLOBAL 1
+SET TERSEO 1
+MODEL:
+SETS:
+   MONTHS /JAN..DEC/; DAYS /SUN..SAT/;
+   ATTRIBUTE: SIZE, ENCEFF; 
+   SERVER: COMPCOST,ENCRCOST, DECRCOST, TRANSFCOST;
+   NODE: ICARD, OCARD, OPCOST, NASIZE;
+   VISIBILITY(ATTRIBUTE, NODE): VP, VE, IP, IE, MVP, MVE, MIP, MIE, IMPL; 
+   CANDIDATE(SERVER, NODE): CAND, ASSIGNEE; 
+   AUTHS(SERVER, ATTRIBUTE): AUTHP, AUTHE;
+   TOPOLOGY(NODE, NODE): PAR;
+   EQUIVALENCE(ATTRIBUTE, ATTRIBUTE, NODE): EQ;
+ENDSETS
+
+DATA:
+! PRINT THE RESULT ;
+! Istruzioni: QUI FINE PRIMA PARTE DA COPIARE SENZA MODIFICHE NEL FILE ;
+
+! Istruzioni: DA QUI PER OGNI OCCORRENZA DI @TEXT( ...), INSERIRE IL PATH AL FILE DI OUTPUT;
+@TEXT( '§output_file§',a) = 
+@WRITE(@NEWLINE( 1), '************************************',@NEWLINE( 1));
+@TEXT( '§output_file§',a) = 
+@WRITE(@NEWLINE( 1), ' *** (The current date and time is:',
+       ' ', DAYS( DWK),
+       ' ', DA,
+       ' ', MONTHS( MO),
+' ', YR,
+', ', HR,
+':', @FORMAT( MN, '%02g'), ':', @FORMAT( SC, '%04.1f'), ')'
+);
+
+! Print assignments;
+@TEXT( '§output_file§',a) = 
+@WRITE(@NEWLINE(1),' *** ASSIGNMENTS :',@NEWLINE(1));
+@TEXT( '§output_file§',a) = 
+    @WRITEFOR( CANDIDATE ( s, n) | ASSIGNEE( s,n) #GT# 0.9 :'',NODE(n),'§', SERVER(s),'§',ASSIGNEE( s,n), '#');
+
+! Print visible plaintext attributes in nodes;
+@TEXT( '§output_file§',a) = 
+@WRITE(@NEWLINE(1),@NEWLINE(1),' *** VISIBLE PLAINTEXT ATTRIBUTES IN NODES :',@NEWLINE(1));
+@TEXT( '§output_file§',a) = 
+@WRITEFOR ( VISIBILITY( a,n) |  VP( a,n) #GT# 0.9 : '',NODE(n),'§', ATTRIBUTE(a),'§',' VP:',VP( a,n), '#');
+
+! Print visible encrypted attributes in nodes;
+@TEXT( '§output_file§',a) = 
+@WRITE(@NEWLINE(1),@NEWLINE(1),' *** VISIBLE ENCRYPTED ATTRIBUTES IN NODES :',@NEWLINE(1));
+@TEXT( '§output_file§',a) = 
+@WRITEFOR ( VISIBILITY( a,n) |  VE( a,n) #GT# 0.9 : '',NODE(n),'§', ATTRIBUTE(a),'§',' VE:',VE( a,n), '#');
+@TEXT( '§output_file§',a) = 
+@WRITE(@NEWLINE( 1), '************************************',@NEWLINE( 1));
+! Istruzioni: QUI FINE INSERIMENTO PATH AL FILE DI OUTPUT PER OGNI OCCORRENZA DI @TEXT( ...);
+
+
+! Istruzioni: DA QUI INIZIANO I DATI DI INPUT A LINGO: sono o dati in input al problema 
+(ad es., nodi e attributi del query plan, costi, server, etc) oppure 
+calcolati dall’app in Python (ad es., profili sulle MRV, candidati).;
+! Istruzioni: QUESTA PARTE VA POPOLATA SECONDO LO SCHEMA 
+"NOMEVARIABILE = lista o matrici di valori <puntoevirgola>", per cui 
+“NOMEVARIABILE = “ va copiato cosi’ com’e’, 
+“lista o matrici di valori” vanno popolate,
+il punto e virgola va messo.;
+! Istruzioni: Color-coding evidenzia in giallo quel che e’ input del problema, in viola quello che e’ calcolato dall’app di Python. ;
+
+ATTRIBUTE = §attr_list§; 
+SERVER = §server_list§;
+NODE = §node_list§;
+
+SIZE = §size§;
+ENCEFF = §enc_eff§;
+
+ICARD = §in_cards§;
+OCARD = §out_cards§; 
+
+COMPCOST = §comp_cost§; 
+ENCRCOST = §encr_cost§; 
+DECRCOST = §decr_cost§; 
+TRANSFCOST = §tr_cost§; 
+
+OPCOST = §op_cost§; 
+NASIZE = §na_size§; 
+
+AUTHP = 
+§auth_plain§ 
+;
+
+AUTHE = 
+§auth_encr§
+;
+
+CAND = 
+§candidates§ 
+;
+
+MVP = 
+§plain_view§
+;
+
+MVE = 
+§encr_view§
+;
+
+MIP = 
+§plain_impl§
+;
+
+MIE = 
+§encr_impl§
+;
+
+IMPL = 
+§go_impl§
+;
+
+PAR = 
+§tree§
+;
+
+EQ = 
+§eq§
+;
+
+ENDDATA
+! Istruzioni: QUI FINISCE LA PARTE DEI DATI DA POPOLARE ;
+
+! Istruzioni: QUI INIZIA LA PARTE DEL MODELLO DI OTTIMIZZAZIONE DATI, DA COPIARE COSI’ COM’E’ ;
+SUBMODEL ASSIGN:
+MIN = 
+! TOT_EXEC_COST; 
+@SUM( NODE( n):
+		(@SUM( SERVER( s):
+				(ASSIGNEE( s, n) * COMPCOST( s) * OPCOST( n) * ICARD( n) * NASIZE( n)
+			))
+		)
+	) + 
+! TOT_ENCR_COST;
+@SUM( NODE( n):
+		(@SUM( NODE( m):
+			(@SUM( SERVER( s):
+				(@SUM( ATTRIBUTE( a):
+	(ASSIGNEE( s, n) * PAR(m, n) * VP( a, n) * VE( a, m) * COMPCOST( s) * ENCRCOST( s) *  OCARD( n) * SIZE( a)
+)))))))) + 
+!TOT_DECR_COST;
+@SUM( NODE( n):
+		(@SUM( NODE( m):
+			(@SUM( SERVER( s):
+				(@SUM( ATTRIBUTE( a):
+	(ASSIGNEE( s, m) * PAR(m, n) * VP( a, m) * VE( a, n) * COMPCOST( s) * DECRCOST( s) *  OCARD( n) * (SIZE( a) * ENCEFF(a))
+)))))))) + 
+!TOT_TRANSF_COST;
+@SUM( NODE( n):
+		(@SUM( NODE( m):
+			(@SUM( SERVER( s):
+				(@SUM( ATTRIBUTE( a):
+	(ASSIGNEE( s, n) * (1 - ASSIGNEE( s, m)) * PAR(m, n) * TRANSFCOST( s) * OCARD( n) * ((SIZE( a) * VP( a, n) * VP( a,m)) + ((SIZE( a) * ENCEFF(a) * (VE( a, n) + (VP( a,n) * VE( a,m))))))
+))))))));
+	
+! Istruzioni: QUI FINISCE LA PARTE DEL MODELLO DA COPIARE COSI’ COM’E’ ;
+
+! Istruzioni: QUI INIZIA UNA PARTE DEI VINCOLI DA POPOLARE, le istruzioni sono nei commenti al file;
+! star node assigned to client ASSIGNEE(server, node);
+§star_nodes§ 
+
+! base relations and projections at their owners ASSIGNEE(server, node);
+§base_nodes§
+
+! base relations and projections (WITH SURVIVED ATTRS) all plaintext VP(a,n) ;
+§base_proj_plain§
+
+! base relations do not have implicit attributes -> FOR ALL ATTRIBUTES! IP( a,n) IE( a,n);
+@FOR( ATTRIBUTE( a): 
+§base_impl§);
+! Istruzioni: QUI FINISCE LA PARTE DEI VINCOLI DA POPOLARE ;
+
+! Istruzioni: QUI INIZIA LA PARTE DEI VINCOLI DA PRENDERE COSI’ COM’E’ ;
+
+! binary variables;
+@FOR( ATTRIBUTE( a): @FOR( NODE( n): @BIN(VP( a,n))));
+@FOR( ATTRIBUTE( a): @FOR( NODE( n): @BIN(IP( a,n))));
+@FOR( ATTRIBUTE( a): @FOR( NODE( n): @BIN(VE( a,n))));
+@FOR( ATTRIBUTE( a): @FOR( NODE( n): @BIN(IE( a,n))));
+@FOR( SERVER( s): @FOR( NODE( n): @BIN(ASSIGNEE( s,n))));
+
+
+@FOR( NODE( n): 
+	@SUM( SERVER( s): (ASSIGNEE( s, n))) = 1
+        );
+
+@FOR( NODE( n):  
+   @SUM( SERVER( s): (ASSIGNEE( s, n) * CAND( s, n))) = 1
+        );
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		@FOR ( SERVER( s):
+			VP( a, n) * ASSIGNEE( s, n) <= AUTHP( s, a)
+		)
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		@FOR ( SERVER( s):
+			IP( a, n) * ASSIGNEE( s, n) <= AUTHP( s, a)
+		)
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		@FOR ( SERVER( s):
+			VE( a, n) * ASSIGNEE( s, n) <= AUTHP( s, a) + AUTHE( s, a)
+		)
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		@FOR ( SERVER( s):
+			IE( a, n) * ASSIGNEE( s, n) <= AUTHP( s, a) + AUTHE( s, a)
+		)
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		(VP( a, n) + VE( a, n)) <= 1
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		(IP( a, n) + IE( a, n)) <= 1
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		VP( a, n) >= MVP( a, n)
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( ATTRIBUTE( b):
+		@FOR( NODE( n): 
+			(EQ( a,b,n) * VP( a,n) * VP( b,n)) + (EQ( a,b,n) * VE( a,n) * VE( b,n)) = EQ( a,b,n)
+		)
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		(VP( a, n) + VE( a, n)) = (MVP( a, n) + MVE( a, n))
+	)
+);
+
+@FOR( ATTRIBUTE( a): 
+	@FOR( NODE( n): 
+		(IP( a, n) + IE( a, n)) = (MIP( a, n) + MIE( a, n))
+	)
+);
+
+@FOR( ATTRIBUTE( a):
+	@FOR( NODE( n): 
+		IMPL( a, n) * VP( a, n) <= IP( a, n)
+	)
+);
+
+@FOR( ATTRIBUTE( a):
+	@FOR( NODE( n): 
+		IMPL( a, n) * VE( a, n) <= IE( a, n)
+	)
+);
+
+@FOR( ATTRIBUTE( a):
+	@FOR( NODE( n): 
+		@FOR ( NODE( m):
+			IP( a, n) >= IP( a, m) * PAR( n, m)
+		)
+	)
+);
+
+@FOR( ATTRIBUTE( a):
+	@FOR( NODE( n): 
+		@FOR ( NODE( m):
+			IE( a, n) >= IE( a, m) * PAR( n, m)
+		)
+	)
+);
+
+ ENDSUBMODEL
+
+CALC:
+T = @STMNOW(); 
+YR = @STM2YR( T); 
+MO = @STM2MON( T); 
+DA = @STM2DAY( T); 
+HR = @STM2HR( T); 
+MN = @STM2MIN( T); 
+SC = @STM2SEC( T); 
+DWK = @STM2DWK( T);
+  
+@SET('TERSEO', 1); 
+  @SOLVE( ASSIGN);
+
+  @WRITE(' ASSIGNMENTS:',@NEWLINE(1), '      Node   Assignee   ', @NEWLINE(1));
+  @FOR( NODE( n) :
+	@FOR (SERVER( s) | ASSIGNEE( s,n) #GT# 0.9 :
+	@WRITE('       ',NODE(n),'        ', SERVER(s),'       ',ASSIGNEE( s,n), @NEWLINE(1));
+    ));
+
+  @WRITE(@NEWLINE(1),@NEWLINE(1),' PROFILES:',@NEWLINE(1), @NEWLINE(1));
+  @FOR( NODE( n) :
+	@FOR (ATTRIBUTE( a) | VP( a,n) #GT# 0.9 :
+		@WRITE('       ',NODE(n),'        ', ATTRIBUTE(a),'       ',' VP:',VP( a,n), @NEWLINE(1)));
+	@FOR (ATTRIBUTE( a) | VE( a,n) #GT# 0.9 :
+		@WRITE('       ',NODE(n),'        ', ATTRIBUTE(a),'       ',' VE:',VE( a,n), @NEWLINE(1)));
+	@FOR (ATTRIBUTE( a) | IP( a,n) #GT# 0.9 :
+		@WRITE('       ',NODE(n),'        ', ATTRIBUTE(a),'       ',' IP:',IP( a,n), @NEWLINE(1)));
+	@FOR (ATTRIBUTE( a) | IE( a,n) #GT# 0.9 :
+		@WRITE('       ',NODE(n),'        ', ATTRIBUTE(a),'       ',' IE:',IE( a,n), @NEWLINE(1)));
+	@FOR (ATTRIBUTE( a):  @FOR (ATTRIBUTE( b) | EQ( a,b,n) #GT# 0.9 :
+		@WRITE('       ',NODE(n),'        ', ATTRIBUTE(a),'       ', ATTRIBUTE(b),'       ',' EQ:',EQ( a,b,n), @NEWLINE(1))));
+	@WRITE(@NEWLINE(1));
+    );
+ENDCALC
+END
+GO
+! Istruzioni: QUI FINISCE LA PARTE DA PREDNERE COSI' COM'E';

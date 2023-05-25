@@ -1,0 +1,8 @@
+{
+	"name": "r2",
+	"fullName": "Test",
+	"owner": "G",
+	"attributes": [ "prod", "test", "date", "fail", "video", "cost", "code" ],
+	"attr_sizes": [ 2, 3, 1, 1, 100, 1, 50 ],
+	"attr_enc_eff": [ 2, 2, 2, 2, 2, 2, 2 ]
+}

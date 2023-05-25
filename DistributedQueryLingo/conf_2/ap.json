@@ -1,0 +1,6 @@
+{
+	"name" : "AP",
+	"fullName" : "AccessPoint",
+	"owner" : "A",
+	"attributes" : ["A", "N", "P", "M"]
+}

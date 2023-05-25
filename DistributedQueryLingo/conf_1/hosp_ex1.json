@@ -1,0 +1,8 @@
+{
+	"name" : "hosp",
+	"fullName" : "Hospital",
+	"owner" : "H",
+	"attributes": [ "S", "B", "D", "T" ],
+	"attr_sizes": [ 2, 2, 2, 2 ],
+	"attr_enc_eff":  [ 2, 2, 2, 2 ]
+}

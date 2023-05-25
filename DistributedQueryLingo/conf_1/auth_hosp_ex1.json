@@ -1,0 +1,38 @@
+{
+	"permissions" : {
+		"H" : {
+			"plain" : ["S", "B", "D", "T"],
+			"encr" : []
+		},
+		
+		"I" : {
+			"plain" : ["B"],
+			"encr" : ["S", "D", "T"]
+		},
+		
+		"U" : {
+			"plain" : ["S", "D", "T"],
+			"encr" : []
+		},
+		
+		"X" : {
+			"plain" : ["D", "T"],
+			"encr" : ["S"]
+		},
+		
+		"Y" : {
+			"plain" : ["B", "D", "T"],
+			"encr" : ["S"]
+		},
+
+		"Z": {
+			"plain": [ "S", "T" ],
+			"encr": [ "D" ]
+		},
+		
+		"any" : {
+			"plain" : ["D", "T"],
+			"encr" : []
+		}
+	}
+}
