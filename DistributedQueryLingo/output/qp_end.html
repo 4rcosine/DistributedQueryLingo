@@ -20,35 +20,35 @@
 	};
 
 	nodeUNODE = {
-innerHTML : "<div class='box_left'><span class='as'>U</span>, </div><div class='box_center '><p class='op'>result to user</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: C, V, S, D<br/><i>i</i>: D<br/><i>eq</i>: {I, S}</div></div>"
+innerHTML : "<div class='box_left'><span class='as'>U</span>, </div><div class='box_center '><p class='op'>result to user</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: V, D, S, C<br/><i>i</i>: D<br/><i>eq</i>: {I, S}</div></div>"
 };
 
 nodeN7 = {
-parent: nodeUNODE, innerHTML : "<div class='box_left'><span class='as'>U</span>, P, Y, X</div><div class='box_center '><p class='op'>user defined function on {I, S}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: C, V, S, D<br/><i>i</i>: D<br/><i>eq</i>: {I, S}</div></div>"
+parent: nodeUNODE, innerHTML : "<div class='box_left'><span class='as'>U</span>, P, X, Y</div><div class='box_center '><p class='op'>user defined function on {I, S}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: V, D, S, C<br/><i>i</i>: D<br/><i>eq</i>: {I, S}</div></div>"
 };
 
 nodeN6 = {
-parent: nodeN7, innerHTML : "<div class='box_left'><span class='as'>U</span>, P, Y, X</div><div class='box_center '><p class='op'>join on {I, S}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: C, S, D, I, V<br/><i>i</i>: D<br/><i>eq</i>: {I, S}</div></div>"
+parent: nodeN7, innerHTML : "<div class='box_left'><span class='as'>U</span>, P, X, Y</div><div class='box_center '><p class='op'>join on {I, S}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: C, I, S, V, D<br/><i>i</i>: D<br/><i>eq</i>: {I, S}</div></div>"
 };
 
 nodeN4 = {
-parent: nodeN6, innerHTML : "<div class='box_left'><span class='as'>P</span></div><div class='box_center '><p class='op'>projection on {I, C, V}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: I, C, V<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+parent: nodeN6, innerHTML : "<div class='box_left'><span class='as'>P</span></div><div class='box_center '><p class='op'>projection on {C, V, I}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: V, I, C<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
 };
 
 nodeN5 = {
-parent: nodeN6, innerHTML : "<div class='box_left'><span class='as'>M</span>, P, Y, X, Z, U</div><div class='box_center '><p class='op'>selection on {D}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: S, D<br/><i>i</i>: D<br/><i>eq</i>: </div></div>"
+parent: nodeN6, innerHTML : "<div class='box_left'><span class='as'>M</span>, X, Y, P, Z, U</div><div class='box_center '><p class='op'>selection on {D}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: D, S<br/><i>i</i>: D<br/><i>eq</i>: </div></div>"
 };
 
 nodeN2 = {
-parent: nodeN4, innerHTML : "<div class='box_left'><span class='as'>P</span></div><div class='box_center  leaf'><p class='op'>RECORDING (T, I, C, V)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: T, I, C, V<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+parent: nodeN4, innerHTML : "<div class='box_left'><span class='as'>P</span></div><div class='box_center  leaf'><p class='op'>RECORDING (C, V, T, I)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: V, I, C, T<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
 };
 
 nodeN3 = {
-parent: nodeN5, innerHTML : "<div class='box_left'><span class='as'>M</span></div><div class='box_center '><p class='op'>projection on {S, D}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: S, D<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+parent: nodeN5, innerHTML : "<div class='box_left'><span class='as'>M</span></div><div class='box_center '><p class='op'>projection on {D, S}</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: D, S<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
 };
 
 nodeN1 = {
-parent: nodeN3, innerHTML : "<div class='box_left'><span class='as'>M</span></div><div class='box_center  leaf'><p class='op'>ACTIVATIONAPP (H, A, S, D)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: H, A, S, D<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
+parent: nodeN3, innerHTML : "<div class='box_left'><span class='as'>M</span></div><div class='box_center  leaf'><p class='op'>ACTIVATIONAPP (H, D, S, A)</p></div><div class='arrow_left'></div><div class='cont_right'><div class='box_right'><i>v</i>: H, D, S, A<br/><i>i</i>: <br/><i>eq</i>: </div></div>"
 };
 
 

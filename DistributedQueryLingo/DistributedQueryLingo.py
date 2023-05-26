@@ -25,10 +25,10 @@ print("--------------------------------------------")
 print("    Secure Query Distribution Calculator    ")
 print("--------------------------------------------")
 
-if not os.path.exists(utils.lingo_path):
-	print("An error occurred during the loading of the configuration: lingo executable not found at path '" + utils.lingo_path + "'")
-	input()
-	sys.exit(-1)
+#if not os.path.exists(utils.lingo_path):
+#	print("An error occurred during the loading of the configuration: lingo executable not found at path '" + utils.lingo_path + "'")
+#	input()
+#	sys.exit(-1)
 
 #Richiesta input
 #print("The following configurations are available: ")
