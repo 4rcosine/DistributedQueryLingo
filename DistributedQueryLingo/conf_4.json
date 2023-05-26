@@ -1,0 +1,9 @@
+{
+	"conf_name" : "Query per draft",
+	"tables" : [
+		{"table_file" : "conf_4/aa.json", "auth_file" : "conf_4/auth_aa.json" },
+		{"table_file" : "conf_4/rec.json", "auth_file" : "conf_4/auth_rec.json" }
+	],
+	"subject_file" : "conf_4/subjects.json",
+	"query_file" : "conf_4/queryplan.json"
+}

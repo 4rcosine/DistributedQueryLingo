@@ -1,0 +1,93 @@
+{
+  "N1": {
+    "op_type": "base",
+    "op_detail": "",
+    "set_attr": [ "S", "H", "A", "D" ],
+    "set_oper": [ "aa" ],
+    "set_attrplain": [],
+    "parent_id": "N3",
+    "order": 0,
+    "in_card": 100,
+    "out_card": 100,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N2": {
+    "op_type": "base",
+    "op_detail": "",
+    "set_attr": [ "I", "T", "V", "C" ],
+    "set_oper": [ "Rec" ],
+    "set_attrplain": [],
+    "parent_id": "N4",
+    "order": 0,
+    "in_card": 100,
+    "out_card": 100,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N3": {
+    "op_type": "proj",
+    "op_detail": "",
+    "set_attr": [ "D", "S" ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N5",
+    "order": 0,
+    "in_card": 100,
+    "out_card": 100,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N4": {
+    "op_type": "proj",
+    "op_detail": "",
+    "set_attr": [ "I", "V", "C" ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N6",
+    "order": 1,
+    "in_card": 100,
+    "out_card": 100,
+    "op_cost": 0,
+    "na_size": 0
+  },
+  "N5": {
+    "op_type": "sel_val",
+    "op_detail": "",
+    "set_attr": [ "D" ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N6",
+    "order": 1,
+    "in_card": 100,
+    "out_card": 40,
+    "op_cost": 1,
+    "na_size": 2
+  },
+  "N6": {
+    "op_type": "join",
+    "op_detail": "",
+    "set_attr": [ "I", "S" ],
+    "set_oper": [],
+    "set_attrplain": [],
+    "parent_id": "N7",
+    "order": 0,
+    "in_card": 40,
+    "out_card": 40,
+    "op_cost": 6,
+    "na_size": 4
+  },
+  "N7": {
+    "op_type": "udf",
+    "op_detail": "",
+    "set_attr": [ "I", "S" ],
+    "set_oper": [ "S" ],
+    "set_attrplain": [],
+    "parent_id": "0",
+    "order": 0,
+    "in_card": 40,
+    "out_card": 40,
+    "op_cost": 5,
+    "na_size": 6
+  }
+}

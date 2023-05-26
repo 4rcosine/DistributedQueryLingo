@@ -85,6 +85,18 @@ def build_initial_json(lista_tab_json):
 			if subj_json[sj]["p"] == [] and subj_json[sj]["e"] == []:
 				subj_json[sj]["p"] = subj_json["any"]["p"]
 				subj_json[sj]["e"] = subj_json["any"]["e"]
+
+		#Controllo se l'user c'è. Se non c'è lo creo come utente che ha permesso di vedere tutti gli attributi in chiaro
+		user_found = False
+		for soggetto in subj_json:
+			if soggetto == "U":
+				user_found = True
+
+		if not user_found:
+			subj_json[soggetto]["p"] = list()
+
+			for attr in problem_info.attr_info:
+				subj_json[soggetto]["p"].append(attr["name"])
 			
 		if "any" in subj_json:
 			del subj_json["any"]

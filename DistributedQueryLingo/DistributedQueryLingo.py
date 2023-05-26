@@ -77,8 +77,15 @@ try:
 
 	#Per ogni soggetto valorizzo le info inerenti
 	si_dict = json.load(open(config["subject_file"]))
+	user_found = False
 	for subj in si_dict:
 		problem_info.add_subj_info(subj, si_dict[subj]["comp_cost"], si_dict[subj]["encr_cost"], si_dict[subj]["decr_cost"], si_dict[subj]["transf_cost"])
+
+		if subj == "U":
+			user_found = True
+
+	if not user_found:
+		problem_info.add_subj_info("U", 999, 999, 999, 999)
 
 	#Per ogni nodo valorizzo le info inerenti
 	qp_dict = json.load(open(config["query_file"]))
@@ -90,8 +97,9 @@ try:
 
 	problem_info.add_node_info("UNODE", last_outcard, 0, 0, 0)
 
-except:
+except Exception as ex :
 	print("An error occurred during the loading of the configuration. Most common errors are: \n- bad json format\n- files specified do not exist\n- attribute array and info arrays have different length (e.g. for a table 4 attributes are specified but enc. eff. is specified for only three of them)\n\nExiting the program")
+	print(ex)
 	sys.exit(-1)
 
 
@@ -120,6 +128,50 @@ if scelta == "y":
 #Step 1: Calcolo dei candidati
 id_primo_nodo = utils.get_root_node(qp)
 qp.calc_cand_rec(id_primo_nodo)
+
+#########################################################
+#Step 3: Output
+print("\n============================\n\tOUTPUT\n============================\n\n")
+lista_ocd = qp.get_ocd()
+lista_asc = qp.get_asc()
+
+for node in problem_info.nodes_info:
+	i = node["name"]
+	nodo = qp.get_nodo(i)
+	vp, ve, ip, ie, eq, cand, assegn, operazione, attributi, operandi, dett_op = nodo.get_profilo()
+	print("Node: " + str(i))
+	
+	
+	#Parti di output generate in base al tipo di operazione
+	if operazione == "gby":
+		print("-> Operation: " + dett_op + " on " + str(operandi).replace("'", "") + ", grouping", end='')
+	else:
+		print("-> Operation: " + utils.ope_name[operazione], end='')
+
+	if operazione != "base":
+		print(" on " + str(attributi).replace("'", ""), end='')
+
+	else:
+		print(" " + names_set[list(operandi)[0]], end='')
+	
+	print("")
+
+	if operazione != "base" and not qp.is_proj_after_base(i):
+		print("-> Candidates: " + str(cand).replace("'", ""))
+
+	print("-> Assignee: " + assegn)
+	#Parti di output generate in base all'eventuale cifratura
+	for ocd in lista_ocd:
+		if i == ocd["figlio"] and ocd["tipo_op"] == "C":
+			print("-> Encryption of " + str(ocd["adc"]).replace("'", ""))
+
+		if i == ocd["padre"] and ocd["tipo_op"] == "D":
+			print("-> Decryption of " + str(ocd["adc"]).replace("'", ""))
+
+	print("\n\tvp: " + str(list(vp)).replace("'", "") + "\n\tve: " + str(list(ve)).replace("'", "") + "\n\tip: " + str(list(ip)).replace("'", "") + "\n\tie: " + str(list(ie)).replace("'", "") + "\n\teq: " + str(list(eq)).replace("'", ""))
+
+	print("\n=====================\n")
+########################################################
 
 #Step 2: Estensione queryplan
 qp.assign_and_extend()

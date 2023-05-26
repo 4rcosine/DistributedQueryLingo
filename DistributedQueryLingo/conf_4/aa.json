@@ -1,0 +1,8 @@
+{
+  "name" : "AA",
+  "fullName" : "ActivationApp",
+  "owner" : "M",
+  "attributes" : ["S", "H", "A", "D"],
+  "attr_sizes" : [1, 1, 2, 2],
+  "attr_enc_eff" : [2, 2, 2, 2]
+}

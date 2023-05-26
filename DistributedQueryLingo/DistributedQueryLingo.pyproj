@@ -12,7 +12,7 @@
     <Name>DistributedQueryLingo</Name>
     <RootNamespace>DistributedQueryLingo</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>.\conf_3.json</CommandLineArguments>
+    <CommandLineArguments>.\conf_4.json</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -36,6 +36,7 @@
     <Folder Include="conf_1\" />
     <Folder Include="conf_2\" />
     <Folder Include="conf_3\" />
+    <Folder Include="conf_4\" />
     <Folder Include="output\" />
     <Folder Include="output\vendor\" />
     <Folder Include="output\vendor\perfect-scrollbar\" />
@@ -65,6 +66,7 @@
     <Content Include="conf_2\cdr.json" />
     <Content Include="conf_2\priority.json" />
     <Content Include="conf_2\queryplan.json" />
+    <Content Include="conf_4.json" />
     <Content Include="conf_3.json" />
     <Content Include="conf_3\auth_r1.json" />
     <Content Include="conf_3\auth_r2.json" />
@@ -72,6 +74,12 @@
     <Content Include="conf_3\r1.json" />
     <Content Include="conf_3\r2.json" />
     <Content Include="conf_3\subjects.json" />
+    <Content Include="conf_4\aa.json" />
+    <Content Include="conf_4\auth_aa.json" />
+    <Content Include="conf_4\auth_rec.json" />
+    <Content Include="conf_4\queryplan.json" />
+    <Content Include="conf_4\rec.json" />
+    <Content Include="conf_4\subjects.json" />
     <Content Include="lingo_path.conf" />
     <Content Include="output\index.html" />
     <Content Include="output\qp_end.html" />

@@ -3,6 +3,9 @@ import os
 import platform
 import utils
 import subprocess
+import requests
+import base64
+import urllib.parse
 
 class nodo_plan:
 	"""Classe che rappresenta il nodo dell'albero della query"""
@@ -208,10 +211,12 @@ class query_plan(object):
 			self.lista_nodi[id].profilo["ie"] = curr_n.profilo["ie"].union(curr_n.profilo["ve"].intersection(curr_n.set_attr))
 
 		elif curr_n.tipo_op == "sel_attr":
-			self.lista_nodi[id].profilo["eq"].append(curr_n.set_attr)       #Qua viene aggiunto un set dentro al set → rappresentare il set di attributi come frozenset o come tupla
+			if curr_n.set_attr not in self.lista_nodi[id].profilo["eq"]:
+				self.lista_nodi[id].profilo["eq"].append(curr_n.set_attr)       #Qua viene aggiunto un set dentro al set → rappresentare il set di attributi come frozenset o come tupla
 
 		elif curr_n.tipo_op == "join":
-			self.lista_nodi[id].profilo["eq"].append(curr_n.set_attr)       #Discorso analogo per sel_attr
+			if curr_n.set_attr not in self.lista_nodi[id].profilo["eq"]:
+				self.lista_nodi[id].profilo["eq"].append(curr_n.set_attr)       #Discorso analogo per sel_attr
 
 		elif curr_n.tipo_op == "gby":
 			self.lista_nodi[id].profilo["vp"] = curr_n.profilo["vp"].intersection(curr_n.set_attr.union(curr_n.set_oper))
@@ -230,7 +235,9 @@ class query_plan(object):
 		elif curr_n.tipo_op == "udf":
 			self.lista_nodi[id].profilo["vp"] = curr_n.profilo["vp"].difference((curr_n.set_attr.difference(curr_n.set_oper)))
 			self.lista_nodi[id].profilo["ve"] = curr_n.profilo["ve"].difference((curr_n.set_attr.difference(curr_n.set_oper)))
-			self.lista_nodi[id].profilo["eq"].append(curr_n.set_attr)
+			
+			if curr_n.set_attr not in self.lista_nodi[id].profilo["eq"]:
+				self.lista_nodi[id].profilo["eq"].append(curr_n.set_attr)
 
 		elif curr_n.tipo_op == "encr":
 			self.lista_nodi[id].profilo["vp"] = curr_n.profilo["vp"].difference(curr_n.set_attr)
@@ -285,7 +292,7 @@ class query_plan(object):
 		input_path = os.path.join(app_path, "input_script.ltf")
 		output_path = os.path.join(app_path, "output_script.ltf")
 
-		base_script = base_script.replace("§output_file§", output_path)
+		#base_script = base_script.replace("§output_file§", output_path)
 		
 		attr_list = ""
 		attr_size = ""
@@ -549,14 +556,25 @@ class query_plan(object):
 			os.remove(output_path)
 
 		#Eseguo lingo con i parametri
-		print("Waiting for Lingo computation...")
-		if platform.system() == "Darwin":
-			os.system("open " + "")
-		else:
-			subprocess.Popen([utils.lingo_path, input_path], stdout=subprocess.DEVNULL).wait()
+		#print("Waiting for Lingo computation...")
+		#if platform.system() == "Darwin":
+		#	os.system("open " + "")
+		#else:
+		#	subprocess.Popen([utils.lingo_path, input_path]).wait()
 		
-		#Lettura dell'output da Lingo
-		f_handle = open(output_path, "r")
+		##Lettura dell'output da Lingo
+		#f_handle = open(output_path, "r")
+
+		#Eseguo un post al server lingo
+		url = 'http://93.38.57.90:8080/'
+		finput = open(input_path, "r")
+		lines = finput.readlines()
+		x = requests.post(url, data={"file" : base64.b64encode("".join(lines).encode("utf-8")).decode("utf-8")})
+
+		url_dec_data = urllib.parse.unquote(x.text)
+		res_data = base64.b64decode(url_dec_data.encode("utf-8")).decode("utf-8")
+
+		f_handle = res_data.split("\n")
 
 		data_line = False
 		output_data = []	#Lista di tre stringhe, una con gli assegnamenti, una con gli attributi in chiaro e una con gli attributi cifrati
@@ -567,7 +585,7 @@ class query_plan(object):
 
 			elif "ASSIGNMENTS" in line or "VISIBLE PLAINTEXT" in line or "VISIBLE ENCRYPTED" in line:
 				data_line = True
-		f_handle.close()
+		#f_handle.close()
 
 		#Interpretazione dell'output di Lingo
 		lingo_assign = output_data[0].split("#")

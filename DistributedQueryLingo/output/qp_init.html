@@ -23,51 +23,39 @@
 innerHTML : "<div class='box_center '><p class='op'>result to user</p></div>"
 };
 
-nodeN10 = {
-parent: nodeUNODE, innerHTML : "<div class='box_center '><p class='op'>projection on {TECH}</p></div>"
-};
-
-nodeN9 = {
-parent: nodeN10, innerHTML : "<div class='box_center '><p class='op'>selection on {COST}</p></div>"
-};
-
-nodeN8 = {
-parent: nodeN9, innerHTML : "<div class='box_center '><p class='op'>sum on {COST}, grouping on {TECH}</p></div>"
-};
-
 nodeN7 = {
-parent: nodeN8, innerHTML : "<div class='box_center '><p class='op'>join on {ID, PROD}</p></div>"
-};
-
-nodeN5 = {
-parent: nodeN7, innerHTML : "<div class='box_center '><p class='op'>selection on {KIND}</p></div>"
+parent: nodeUNODE, innerHTML : "<div class='box_center '><p class='op'>user defined function on {C, I}</p></div>"
 };
 
 nodeN6 = {
-parent: nodeN7, innerHTML : "<div class='box_center '><p class='op'>selection on {FAIL}</p></div>"
-};
-
-nodeN3 = {
-parent: nodeN5, innerHTML : "<div class='box_center '><p class='op'>projection on {ID, TECH, KIND}</p></div>"
+parent: nodeN7, innerHTML : "<div class='box_center '><p class='op'>join on {I, S}</p></div>"
 };
 
 nodeN4 = {
-parent: nodeN6, innerHTML : "<div class='box_center '><p class='op'>projection on {COST, FAIL, PROD}</p></div>"
+parent: nodeN6, innerHTML : "<div class='box_center '><p class='op'>projection on {C, I, V}</p></div>"
 };
 
-nodeN1 = {
-parent: nodeN3, innerHTML : "<div class='box_center  leaf'><p class='op'>ANAGRAFICA (ID, TECH, KIND, SUPERVISOR)</p></div>"
+nodeN5 = {
+parent: nodeN6, innerHTML : "<div class='box_center '><p class='op'>selection on {D}</p></div>"
 };
 
 nodeN2 = {
-parent: nodeN4, innerHTML : "<div class='box_center  leaf'><p class='op'>TEST (FAIL, TEST, DATE, PROD, CODE, COST, VIDEO)</p></div>"
+parent: nodeN4, innerHTML : "<div class='box_center  leaf'><p class='op'>RECORDING (C, I, T, V)</p></div>"
+};
+
+nodeN3 = {
+parent: nodeN5, innerHTML : "<div class='box_center '><p class='op'>projection on {D, S}</p></div>"
+};
+
+nodeN1 = {
+parent: nodeN3, innerHTML : "<div class='box_center  leaf'><p class='op'>ACTIVATIONAPP (D, A, S, H)</p></div>"
 };
 
 
 
 
 	ch = [
-		config, nodeUNODE, nodeN10, nodeN9, nodeN8, nodeN7, nodeN5, nodeN6, nodeN3, nodeN4, nodeN1, nodeN2
+		config, nodeUNODE, nodeN7, nodeN6, nodeN4, nodeN5, nodeN2, nodeN3, nodeN1
 	];
 
 	function calcRow() {

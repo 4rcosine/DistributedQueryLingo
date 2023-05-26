@@ -1,0 +1,8 @@
+{
+  "P" : {"comp_cost":110,"encr_cost":10,"decr_cost":10,"transf_cost":11},
+  "M" : {"comp_cost":100,"encr_cost":1,"decr_cost":1,"transf_cost":1},
+  "U" : {"comp_cost":100,"encr_cost":10,"decr_cost":100,"transf_cost":100 },
+  "X" : {"comp_cost":1,"encr_cost":1,"decr_cost":1,"transf_cost":1},
+  "Y" : {"comp_cost":2,"encr_cost":1,"decr_cost":1,"transf_cost":2},
+  "Z" : {"comp_cost":1,"encr_cost":1,"decr_cost":1,"transf_cost":1}
+}

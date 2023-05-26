@@ -19,9 +19,9 @@ DATA:
 ! Istruzioni: QUI FINE PRIMA PARTE DA COPIARE SENZA MODIFICHE NEL FILE ;
 
 ! Istruzioni: DA QUI PER OGNI OCCORRENZA DI @TEXT( ...), INSERIRE IL PATH AL FILE DI OUTPUT;
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITE(@NEWLINE( 1), '************************************',@NEWLINE( 1));
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITE(@NEWLINE( 1), ' *** (The current date and time is:',
        ' ', DAYS( DWK),
        ' ', DA,
@@ -32,23 +32,23 @@ DATA:
 );
 
 ! Print assignments;
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITE(@NEWLINE(1),' *** ASSIGNMENTS :',@NEWLINE(1));
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
     @WRITEFOR( CANDIDATE ( s, n) | ASSIGNEE( s,n) #GT# 0.9 :'',NODE(n),'§', SERVER(s),'§',ASSIGNEE( s,n), '#');
 
 ! Print visible plaintext attributes in nodes;
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITE(@NEWLINE(1),@NEWLINE(1),' *** VISIBLE PLAINTEXT ATTRIBUTES IN NODES :',@NEWLINE(1));
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITEFOR ( VISIBILITY( a,n) |  VP( a,n) #GT# 0.9 : '',NODE(n),'§', ATTRIBUTE(a),'§',' VP:',VP( a,n), '#');
 
 ! Print visible encrypted attributes in nodes;
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITE(@NEWLINE(1),@NEWLINE(1),' *** VISIBLE ENCRYPTED ATTRIBUTES IN NODES :',@NEWLINE(1));
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITEFOR ( VISIBILITY( a,n) |  VE( a,n) #GT# 0.9 : '',NODE(n),'§', ATTRIBUTE(a),'§',' VE:',VE( a,n), '#');
-@TEXT( 'C:\Users\Giobberto\source\repos\DistributedQueryLingo\DistributedQueryLingo\output_script.ltf',a) = 
+@TEXT( '§output_file§',a) = 
 @WRITE(@NEWLINE( 1), '************************************',@NEWLINE( 1));
 ! Istruzioni: QUI FINE INSERIMENTO PATH AL FILE DI OUTPUT PER OGNI OCCORRENZA DI @TEXT( ...);
 
@@ -63,257 +63,182 @@ calcolati dall’app in Python (ad es., profili sulle MRV, candidati).;
 il punto e virgola va messo.;
 ! Istruzioni: Color-coding evidenzia in giallo quel che e’ input del problema, in viola quello che e’ calcolato dall’app di Python. ;
 
-ATTRIBUTE = ID KIND TECH SUPERVISOR PROD TEST DATE FAIL VIDEO COST CODE; 
-SERVER = T G C X Y U;
-NODE = N1 N2 N3 N4 N5 N6 N7 N8 N9 N10 UNODE;
+ATTRIBUTE = S H A D I T V C; 
+SERVER = P M U X Y Z;
+NODE = N1 N2 N3 N4 N5 N6 N7 UNODE;
 
-SIZE = 2 2 5 2 2 3 1 1 100 1 50;
-ENCEFF = 2 2 2 2 2 2 2 2 2 2 2;
+SIZE = 1 1 2 2 1 2 50 2;
+ENCEFF = 2 2 2 2 2 2 2 2;
 
-ICARD = 100 200 100 200 100 200 100 40 10 5 0;
-OCARD = 100 200 100 200 40 50 100 10 5 5 0; 
+ICARD = 100 100 100 100 100 40 40 0;
+OCARD = 100 100 100 100 40 40 40 0; 
 
-COMPCOST = 11 10 9 1 2 100; 
-ENCRCOST = 1 1 1 1 1 1; 
-DECRCOST = 1 1 1 1 1 1; 
-TRANSFCOST = 51 50 49 5 6 100; 
+COMPCOST = 110 100 100 1 2 1; 
+ENCRCOST = 10 1 10 1 1 1; 
+DECRCOST = 10 1 100 1 1 1; 
+TRANSFCOST = 11 1 100 1 2 1; 
 
-OPCOST = 0 0 0 0 1 1 6 5 1 0 0; 
-NASIZE = 0 0 0 0 2 1 4 6 1 0 0; 
+OPCOST = 0 0 0 0 1 6 5 0; 
+NASIZE = 0 0 0 0 2 4 6 0; 
 
 AUTHP = 
-1 1 1 1 0 0 1 1 1 0 0
-1 1 0 1 1 1 1 1 1 1 1
-0 0 1 0 0 0 1 1 1 0 1
-0 0 0 1 0 0 1 0 0 0 0
-0 1 0 1 0 0 1 0 1 0 1
-1 1 1 1 1 1 1 1 1 1 1 
+1 0 0 0 1 1 1 1
+1 1 1 1 0 0 0 0
+1 1 0 1 1 0 1 1
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 1 1
+0 0 1 0 1 1 0 1 
 ;
 
 AUTHE = 
-0 0 0 0 1 0 0 0 0 1 1
-0 0 1 0 0 0 0 0 0 0 0
-1 1 0 1 1 0 0 0 0 1 0
-1 1 1 0 1 0 0 1 1 1 1
-1 0 1 0 1 0 0 1 0 1 0
-0 0 0 0 0 0 0 0 0 0 0
+0 1 1 1 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 1 0 0 1 0 0
+1 1 1 1 1 1 1 1
+1 0 1 1 1 0 0 0
+1 1 0 1 0 0 1 0
 ;
 
 CAND = 
-1 0 1 0 1 1 0 0 0 0 0
-0 1 0 1 1 1 1 1 1 1 0
-0 0 0 0 1 1 1 1 1 1 1
-0 0 0 0 1 1 1 1 1 1 0
-0 0 0 0 1 1 1 1 1 1 0
-0 0 0 0 1 1 1 1 1 1 1 
+0 1 0 1 1 1 1 0
+1 0 1 0 1 0 0 0
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 0
+0 0 0 0 1 1 1 0
+0 0 0 0 1 0 0 0 
 ;
 
 MVP = 
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 1
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 1
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 1
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 1
+0 0 0 0 0 0 0 1
 ;
 
 MVE = 
-1 0 1 0 1 0 1 0 0 0 0
-1 0 1 0 1 0 1 0 0 0 0
-1 0 1 0 1 0 1 1 1 1 0
-1 0 0 0 0 0 0 0 0 0 0
-0 1 0 1 0 1 1 0 0 0 0
-0 1 0 0 0 0 0 0 0 0 0
-0 1 0 0 0 0 0 0 0 0 0
-0 1 0 1 0 1 1 0 0 0 0
-0 1 0 0 0 0 0 0 0 0 0
-0 1 0 1 0 1 1 1 1 0 0
-0 1 0 0 0 0 0 0 0 0 0
+1 0 1 0 1 1 1 0
+1 0 0 0 0 0 0 0
+1 0 0 0 0 0 0 0
+1 0 1 0 1 1 1 0
+0 1 0 1 0 1 0 0
+0 1 0 0 0 0 0 0
+0 1 0 1 0 1 1 0
+0 1 0 1 0 1 1 0
 ;
 
 MIP = 
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
 ;
 
 MIE = 
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 1 0 1 1 1 1 1
-0 0 0 0 0 0 0 1 1 1 1
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 1 1 1 1 1 1
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 1 1 1
-0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 1 1 1 1
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
 ;
 
 IMPL = 
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 1 0 0 0 0 0 0
-0 0 0 0 0 0 0 1 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 1 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 1 0 0
-0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 1 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
 ;
 
 PAR = 
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-1 0 0 0 0 0 0 0 0 0 0
-0 1 0 0 0 0 0 0 0 0 0
-0 0 1 0 0 0 0 0 0 0 0
-0 0 0 1 0 0 0 0 0 0 0
-0 0 0 0 1 1 0 0 0 0 0
-0 0 0 0 0 0 1 0 0 0 0
-0 0 0 0 0 0 0 1 0 0 0
-0 0 0 0 0 0 0 0 1 0 0
-0 0 0 0 0 0 0 0 0 1 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+1 0 0 0 0 0 0 0
+0 1 0 0 0 0 0 0
+0 0 1 0 0 0 0 0
+0 0 0 1 1 0 0 0
+0 0 0 0 0 1 0 0
+0 0 0 0 0 0 1 0
 ;
 
 EQ = 
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 1 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 1 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 1 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 1 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0
 ;
 
 ENDDATA
@@ -355,32 +280,28 @@ MIN =
 
 ! Istruzioni: QUI INIZIA UNA PARTE DEI VINCOLI DA POPOLARE, le istruzioni sono nei commenti al file;
 ! star node assigned to client ASSIGNEE(server, node);
-ASSIGNEE( 6,11) = 1; 
+ASSIGNEE( 3,8) = 1; 
 
 ! base relations and projections at their owners ASSIGNEE(server, node);
-ASSIGNEE( 1,1) = 1;
-ASSIGNEE( 1,3) = 1;
-ASSIGNEE( 2,2) = 1;
-ASSIGNEE( 2,4) = 1;
+ASSIGNEE( 1,2) = 1;
+ASSIGNEE( 1,4) = 1;
+ASSIGNEE( 2,1) = 1;
+ASSIGNEE( 2,3) = 1;
 
 ! base relations and projections (WITH SURVIVED ATTRS) all plaintext VP(a,n) ;
 VP( 1,1) = 1;
 VP( 1,3) = 1;
 VP( 2,1) = 1;
-VP( 2,3) = 1;
 VP( 3,1) = 1;
-VP( 3,3) = 1;
 VP( 4,1) = 1;
+VP( 4,3) = 1;
 VP( 5,2) = 1;
 VP( 5,4) = 1;
 VP( 6,2) = 1;
 VP( 7,2) = 1;
+VP( 7,4) = 1;
 VP( 8,2) = 1;
 VP( 8,4) = 1;
-VP( 9,2) = 1;
-VP( 10,2) = 1;
-VP( 10,4) = 1;
-VP( 11,2) = 1;
 
 ! base relations do not have implicit attributes -> FOR ALL ATTRIBUTES! IP( a,n) IE( a,n);
 @FOR( ATTRIBUTE( a): 
