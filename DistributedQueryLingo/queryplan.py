@@ -574,6 +574,9 @@ class query_plan(object):
 		url_dec_data = urllib.parse.unquote(x.text)
 		res_data = base64.b64decode(url_dec_data.encode("utf-8")).decode("utf-8")
 
+		fwriter = open(output_path, "w")
+		fwriter.writelines(res_data.replace("#", "\n").replace("§", "\t"))
+		fwriter.close()
 		f_handle = res_data.split("\n")
 
 		data_line = False
