@@ -10,7 +10,7 @@ SETS:
    VISIBILITY(ATTRIBUTE, NODE): VP, VE, IP, IE, MVP, MVE, MIP, MIE, IMPL; 
    CANDIDATE(SERVER, NODE): CAND, ASSIGNEE; 
    AUTHS(SERVER, ATTRIBUTE): AUTHP, AUTHE;
-   TOPOLOGY(NODE, NODE): PAR;
+   TOPOLOGY(NODE, NODE): PAR, PARUDF;
    EQUIVALENCE(ATTRIBUTE, ATTRIBUTE, NODE): EQ;
 ENDSETS
 
@@ -115,6 +115,10 @@ IMPL =
 
 PAR = 
 §tree§
+;
+
+PARUDF = 
+§parudf§
 ;
 
 EQ = 
@@ -287,6 +291,14 @@ MIN =
 			IE( a, n) >= IE( a, m) * PAR( n, m)
 		)
 	)
+);
+
+@FOR( SERVER( s):
+        @FOR( NODE( n):
+                @FOR ( NODE( m):
+                        ASSIGNEE( s,m) * ASSIGNEE( s,n) >= ASSIGNEE( s,m) * PARUDF( m,n)
+                )
+        )
 );
 
  ENDSUBMODEL

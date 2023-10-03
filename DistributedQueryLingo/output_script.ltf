@@ -1,49 +1,49 @@
 
 ************************************
 
- *** (The current date and time is: MON 29 MAY 2023, 9:37:19.6)
+ *** (The current date and time is: WED 4 OCT 2023, 0:16:40.9)
  *** ASSIGNMENTS :
 N2	P	1
 N4	P	1
 N1	M	1
 N3	M	1
-N5	M	1
-N6	U	1
-N7	U	1
 UNODE	U	1
+N5	X	1
+N6	Y	1
+N7	Y	1
+N7_PROJ	Y	1
 
 
  *** VISIBLE PLAINTEXT ATTRIBUTES IN NODES :
 N1	S	 VP:1
 N3	S	 VP:1
-N5	S	 VP:1
-N6	S	 VP:1
-N7	S	 VP:1
-UNODE	S	 VP:1
 N1	H	 VP:1
 N1	A	 VP:1
 N1	D	 VP:1
 N3	D	 VP:1
-N5	D	 VP:1
-N6	D	 VP:1
-N7	D	 VP:1
-UNODE	D	 VP:1
 N2	I	 VP:1
 N4	I	 VP:1
-N6	I	 VP:1
 N2	T	 VP:1
 N2	V	 VP:1
 N4	V	 VP:1
 N6	V	 VP:1
 N7	V	 VP:1
-UNODE	V	 VP:1
 N2	C	 VP:1
 N4	C	 VP:1
 N6	C	 VP:1
 N7	C	 VP:1
+N7_PROJ	C	 VP:1
 UNODE	C	 VP:1
 
 
  *** VISIBLE ENCRYPTED ATTRIBUTES IN NODES :
+N5	S	 VE:1
+N6	S	 VE:1
+N7	S	 VE:1
+N5	D	 VE:1
+N6	D	 VE:1
+N7	D	 VE:1
+N6	I	 VE:1
+N7	I	 VE:1
 
 ************************************

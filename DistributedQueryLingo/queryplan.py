@@ -1,11 +1,13 @@
+#from msilib.schema import File
 import problem_info
 import os
-import platform
+#import platform
 import utils
-import subprocess
+#import subprocess
 import requests
 import base64
 import urllib.parse
+import lingo_api as lingo
 
 class nodo_plan:
 	"""Classe che rappresenta il nodo dell'albero della query"""
@@ -19,27 +21,31 @@ class nodo_plan:
 	#profilo = profilo del nodo
 	#candidati = set dei possibili assegnatari per il nodo
 	#assegnatario = soggetto a cui è stato assegnato il nodo
-
-	def __init__(self, tipo_op, dett_op, set_attributi, set_operandi, set_attrplain, id_padre, ordine):
+	
+	def __init__(self, tipo_op="", dett_op="", set_attributi=set(), set_operandi=set(), set_attrplain=set(), id_padre="", ordine=0, vp=set(), ve=set(), ip=set(), ie=set(), eq=[], rn=dict(), candidati=set(), assegnatario=""):
 		self.tipo_op = tipo_op
 		self.dett_op = dett_op
-		self.set_attr = utils.upper_set(set_attributi)
-		self.set_oper = utils.upper_set(set_operandi)
+		self.set_attr = utils.upper_set(set_attributi).copy()
+		self.set_oper = utils.upper_set(set_operandi).copy()
 		self.id_padre = id_padre.upper()
-		self.set_attrplain = utils.upper_set(set_attrplain)
+		self.set_attrplain = utils.upper_set(set_attrplain).copy()
 		self.ordine = ordine
 		self.profilo = {}
-		self.profilo["vp"] = set()
-		self.profilo["ve"] = set()
-		self.profilo["ip"] = set()
-		self.profilo["ie"] = set()
-		self.profilo["eq"] = []
-		self.profilo["rn"] = dict()
-		self.candidati = set()
-		self.assegnatario = ""
+		self.profilo["vp"] = vp.copy()
+		self.profilo["ve"] = ve.copy()
+		self.profilo["ip"] = ip.copy()
+		self.profilo["ie"] = ie.copy()
+		self.profilo["eq"] = eq.copy()
+		self.profilo["rn"] = rn.copy()
+
+		self.candidati = candidati.copy()
+		self.assegnatario = assegnatario
 
 	def get_profilo(self):
 		return (self.profilo["vp"], self.profilo["ve"], self.profilo["ip"], self.profilo["ie"], self.profilo["eq"], self.candidati, self.assegnatario, self.tipo_op, self.set_attr, self.set_oper, self.dett_op)
+
+	def get(self):
+		return (self.tipo_op, self.dett_op, self.set_attr, self.set_oper, self.set_attrplain, self.id_padre, self.ordine, self.profilo["vp"], self.profilo["ve"], self.profilo["ip"], self.profilo["ie"], self.profilo["eq"], self.profilo["rn"], self.candidati, self.assegnatario)
 
 
 class query_plan(object):
@@ -68,6 +74,8 @@ class query_plan(object):
 
 		nodo = nodo_plan(tipo_op="star", dett_op="", set_attributi=[], set_operandi=[], set_attrplain=attrplain, id_padre="0", ordine=0)
 		self.lista_nodi[id_snode] = nodo
+
+	
 		
 	def get_nodo(self, id):
 		return self.lista_nodi[id]
@@ -233,8 +241,8 @@ class query_plan(object):
 			self.lista_nodi[id].profilo["ve"] = curr_n.profilo["ve"].difference(curr_n.set_attr).union(curr_n.set_oper)
 		
 		elif curr_n.tipo_op == "udf":
-			self.lista_nodi[id].profilo["vp"] = curr_n.profilo["vp"].difference((curr_n.set_attr.difference(curr_n.set_oper)))
-			self.lista_nodi[id].profilo["ve"] = curr_n.profilo["ve"].difference((curr_n.set_attr.difference(curr_n.set_oper)))
+			#self.lista_nodi[id].profilo["vp"] = curr_n.profilo["vp"].difference((curr_n.set_attr.difference(curr_n.set_oper)))
+			#self.lista_nodi[id].profilo["ve"] = curr_n.profilo["ve"].difference((curr_n.set_attr.difference(curr_n.set_oper)))
 			
 			if curr_n.set_attr not in self.lista_nodi[id].profilo["eq"]:
 				self.lista_nodi[id].profilo["eq"].append(curr_n.set_attr)
@@ -288,11 +296,13 @@ class query_plan(object):
 		base_script = f_handle.read()
 		f_handle.close()
 
-		app_path = utils.get_cur_dir()
-		input_path = os.path.join(app_path, "input_script.ltf")
-		output_path = os.path.join(app_path, "output_script.ltf")
+		#app_path = utils.get_cur_dir()
+		#input_path = os.path.join(app_path, "input_script.ltf")
+		#output_path = os.path.join(app_path, "output_script.ltf")
+		input_path = "./input_script.ltf"
+		output_path = "./output_script.ltf"
 
-		#base_script = base_script.replace("§output_file§", output_path)
+		base_script = base_script.replace("§output_file§", output_path)
 		
 		attr_list = ""
 		attr_size = ""
@@ -398,6 +408,17 @@ class query_plan(object):
 				par_row += "1 " if self.lista_nodi[node_col["name"]].id_padre == node_row["name"] else "0 "
 
 			tree += par_row.strip() + "\n"
+
+
+		#Matrice delle parentele tra nodi udf
+		parudf = ""
+
+		for node_row in problem_info.nodes_info:
+			par_row = ""
+			for node_col in problem_info.nodes_info:
+				par_row += "1 " if self.lista_nodi[node_col["name"]].id_padre == node_row["name"] and node_row["name"].endswith("_PROJ") else "0 "
+
+			parudf += par_row.strip() + "\n"
 
 		#Matrice dei nodi che rendono impliciti gli attributi
 		impl_nodes = ""
@@ -538,6 +559,7 @@ class query_plan(object):
 		base_script = base_script.replace("§encr_impl§", encr_impl.strip())
 		base_script = base_script.replace("§go_impl§", impl_nodes.strip())
 		base_script = base_script.replace("§tree§", tree.strip())
+		base_script = base_script.replace("§parudf§", parudf.strip())
 		base_script = base_script.replace("§eq§", eq_nodes.strip())
 
 		#Vincoli
@@ -566,17 +588,37 @@ class query_plan(object):
 		#f_handle = open(output_path, "r")
 
 		#Eseguo un post al server lingo
-		url = 'http://93.38.57.90:8080/'
+
+		""" VECCHIA METOLOGIA CON EXE LINGO """
+		
+		url = 'http://deadtome.ddns.net:8080/'
 		finput = open(input_path, "r")
 		lines = finput.readlines()
 		x = requests.post(url, data={"file" : base64.b64encode("".join(lines).encode("utf-8")).decode("utf-8")})
 
 		url_dec_data = urllib.parse.unquote(x.text)
 		res_data = base64.b64decode(url_dec_data.encode("utf-8")).decode("utf-8")
-
 		fwriter = open(output_path, "w")
 		fwriter.writelines(res_data.replace("#", "\n").replace("§", "\t"))
 		fwriter.close()
+
+		""" FINE VECCHIA METODOLOGIA """
+
+
+		""" NUOVA METOLOGIA CON LINGO_API """
+		
+		#print("Feeding lingo with the input...")
+		#model = lingo.Model(input_path)
+		
+		#print("Solving model...")
+		#lingo.solve(model)
+
+		#print("Parsing the output...")
+		#handle_output = open(output_path, "r")
+		#res_data = handle_output.read()
+
+		""" FINE NUOVA METODOLOGIA """
+
 		f_handle = res_data.split("\n")
 
 		data_line = False
@@ -723,3 +765,17 @@ class query_plan(object):
 				figli.append(indice)
 
 		return self.lista_nodi[figli[0]].tipo_op == "base"
+
+	def is_proj_after_udf(self, id_nodo):
+		#Determino i figli del nodo corrente
+
+		if self.lista_nodi[id_nodo].tipo_op != 'proj':
+			return False
+
+		figli = []
+		
+		for indice, nodo_tmp in self.lista_nodi.items():
+			if nodo_tmp.id_padre == id_nodo:
+				figli.append(indice)
+
+		return self.lista_nodi[figli[0]].tipo_op == "udf"

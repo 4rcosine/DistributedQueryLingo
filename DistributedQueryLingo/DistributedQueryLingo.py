@@ -1,25 +1,17 @@
 
-
-from genericpath import exists
 import queryplan
 import json
 import utils
 import sys
 import os
-import platform
 import problem_info
 import utils
+import webbrowser
 
 #Step 0: Inizializzazione
 lista_tab_json = []
 pri_dict = {}
 names_set = dict()
-
-#Lettura file configurazioni
-lingo_path_file = open('lingo_path.conf')
-
-#Controllo esistenza lingo e valorizzazione var globale
-utils.lingo_path = lingo_path_file.readline()
 
 print("--------------------------------------------")
 print("    Secure Query Distribution Calculator    ")
@@ -90,6 +82,9 @@ try:
 	#Per ogni nodo valorizzo le info inerenti
 	qp_dict = json.load(open(config["query_file"]))
 	last_outcard = 0
+
+	utils.fix_udf(qp_dict)
+
 	for node in qp_dict:
 		problem_info.add_node_info(node, qp_dict[node]["in_card"], qp_dict[node]["out_card"], qp_dict[node]["op_cost"], qp_dict[node]["na_size"])
 		if qp_dict[node]["parent_id"] == "":
@@ -111,19 +106,18 @@ for chiave, valore in qp_dict.items():
 	qp.add_nodo(chiave, valore["op_type"], valore["op_detail"], set(valore["set_attr"]), set(valore["set_oper"]), set(valore["set_attrplain"]), valore["parent_id"], valore["order"])
 
 qp.add_star_node()
-
 qp.set_subj(subj_dict)
 
 #Eventualmente disegno l'albero
-scelta = ""
-while scelta != "n" and scelta != "y":
-	scelta = input("Do you want to draw the initial query tree plan? [y/n]: ").lower()
+#scelta = ""
+#while scelta != "n" and scelta != "y":
+#	scelta = input("Do you want to draw the initial query tree plan? [y/n]: ").lower()
 
-	if scelta != "n" and scelta != "y":
-		print("Invalid option.") 
+#	if scelta != "n" and scelta != "y":
+#		print("Invalid option.") 
 
-if scelta == "y":
-	utils.draw_tree(qp, names_set, True)
+#if scelta == "y":
+utils.draw_tree(qp, names_set, True)
 
 #Step 1: Calcolo dei candidati
 id_primo_nodo = utils.get_root_node(qp)
@@ -229,11 +223,23 @@ print("\nEnd of computation\n\n")
 
 #Eventualmente disegno l'albero
 scelta = ""
-while scelta != "n" and scelta != "y":
-	scelta = input("Do you want to draw the resulting query tree plan? [y/n]: ").lower()
+#while scelta != "n" and scelta != "y":
+#	scelta = input("Do you want to draw the resulting query tree plan? [y/n]: ").lower()
 
-	if scelta != "n" and scelta != "y":
-		print("Invalid option.") 
+#	if scelta != "n" and scelta != "y":
+#		print("Invalid option.") 
 
-if scelta == "y":
-	utils.draw_tree(qp, names_set, False)
+#if scelta == "y":
+utils.draw_tree(qp, names_set, False)
+	
+temp_in = ""
+while temp_in != "exit" and temp_in != "show":
+	print("\n=====================\n")
+	print("The computation has reached its end. Type 'show' to show the resulting trees in browser, or type 'exit' to exit the program.")
+	print("\n=====================")
+	print("Choice: ", end="")
+	temp_in = input()
+
+	if temp_in == "show":
+		webbrowser.open("file://" + os.path.realpath("./output/qp_init.html"))
+		webbrowser.open("file://" + os.path.realpath("./output/qp_end.html"))

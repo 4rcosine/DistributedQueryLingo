@@ -1,0 +1,9 @@
+{
+  "name" : "Rec",
+  "fullName" : "Recording",
+  "owner" : "P",
+  "attributes": ["I", "T", "V", "C"],
+  "attr_sizes": [1, 2, 50, 2],
+  "attr_enc_eff":  [2, 2, 2, 2]
+}
+

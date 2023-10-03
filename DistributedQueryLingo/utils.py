@@ -1,9 +1,9 @@
 #Modulo delle Utilities (funzioni ad uso comune)
-from email import utils
 import os
 import sys
 import platform
 import problem_info
+import queryplan
 
 lingo_path = ""
 
@@ -103,6 +103,39 @@ def build_initial_json(lista_tab_json):
 
 	return subj_json
 
+#Funzione per sviluppare le UDF in UDF + proiezione (fix per lingo)
+def fix_udf(qp_dict):
+
+	qp_dict_tmp = dict()
+
+	for id, nodo in qp_dict.items():
+		qp_dict_tmp[id] = nodo
+
+	for node in qp_dict_tmp:
+
+		if qp_dict_tmp[node]["op_type"] == "udf":
+			#Aggiungo un nodo di tipo proiezione
+			id_padre_udf = qp_dict_tmp[node]["parent_id"]
+			qp_dict[node + "_PROJ"] = {
+					"op_type": "proj",
+					"op_detail": "",
+					"set_attr": qp_dict_tmp[node]["set_oper"],
+					"set_oper": [],
+					"set_attrplain": [],
+					"parent_id": id_padre_udf,
+					"order": 0,
+					"in_card": qp_dict_tmp[node]["out_card"],
+					"out_card": qp_dict_tmp[node]["out_card"],
+					"op_cost": 0,
+					"na_size": 0
+				}
+			
+			#print("in card proj: " + str(qp_dict[node + "_PROJ"]["in_card"]))
+			#print("out card proj: " + str(qp_dict[node + "_PROJ"]["out_card"]))
+			
+			qp_dict[node]["set_oper"] = []
+			qp_dict[node]["parent_id"] = id + "_PROJ"
+
 
 def parseUint(str):
 	try:
@@ -121,25 +154,54 @@ def draw_tree(qp, names_set, first):
 	stack_nodi = []
 	stack_nodi.append(get_root_node(qp))
 	nodi_ordinati = []
+
+	#Ricalcolo il query plan creandone uno "temporaneo" mergiando i nodi UDF con le relative proiezioni
+	qp_draw = queryplan.query_plan() 
+
+	for indice, nodo_tmp in qp.lista_nodi.items():
+		if nodo_tmp.tipo_op == "proj" and qp.is_proj_after_udf(indice):
+
+			nodo_udf = dict()
+			id_nodo_udf = ""
+
+			for tmp_idx_figlio, tmp_nodo_figlio in qp.lista_nodi.items():
+				if tmp_nodo_figlio.id_padre == indice:
+					nodo_udf = tmp_nodo_figlio
+					id_nodo_udf = tmp_idx_figlio
+
+			dn = nodo_tmp.get()
+			qp_draw.lista_nodi[id_nodo_udf] = queryplan.nodo_plan(dn[0], dn[1], dn[2], dn[3], dn[4], dn[5], dn[6], dn[7], dn[8], dn[9], dn[10], dn[11], dn[12], dn[13], dn[14])
+			qp_draw.lista_nodi[id_nodo_udf].tipo_op = "udf"
+			qp_draw.lista_nodi[id_nodo_udf].set_attr = nodo_udf.set_attr
+			qp_draw.lista_nodi[id_nodo_udf].set_oper = nodo_tmp.set_attr
+
+
+		elif nodo_tmp.tipo_op != "udf":
+			dn = nodo_tmp.get()
+			qp_draw.lista_nodi[indice] = queryplan.nodo_plan(dn[0], dn[1], dn[2], dn[3], dn[4], dn[5], dn[6], dn[7], dn[8], dn[9], dn[10], dn[11], dn[12], dn[13], dn[14])
+
+			
+			
+
 	#Ordino i nodi
 	while len(stack_nodi) > 0:
 		curr_node = stack_nodi.pop(0)
 		nodi_ordinati.append(curr_node)
 
-		for indice, nodo_tmp in qp.lista_nodi.items():
+		for indice, nodo_tmp in qp_draw.lista_nodi.items():
 			if nodo_tmp.id_padre == curr_node:
 				stack_nodi.append(indice)
 
 	for node in nodi_ordinati:
 	
 		i = node
-		html_ls_nodi += (", " if i != get_root_node(qp) else "") + "node" + (i)
+		html_ls_nodi += (", " if i != get_root_node(qp_draw) else "") + "node" + (i)
 
 		html_nodo = ""
-		nodo = qp.get_nodo(i)
+		nodo = qp_draw.get_nodo(i)
 		vp, ve, ip, ie, eq, cand, assegn, operazione, attributi, operandi, dett_op = nodo.get_profilo()
 		html_nodo += "node" + (i) + " = {\n"
-		html_nodo += "parent: node" + nodo.id_padre + ", " if i != get_root_node(qp) else ""
+		html_nodo += "parent: node" + nodo.id_padre + ", " if i != get_root_node(qp_draw) else ""
 		html_nodo += "innerHTML : \""
 	
 		if not first:
@@ -149,7 +211,7 @@ def draw_tree(qp, names_set, first):
 	
 			html_nodo += "<div class='box_left'>"
 
-			if operazione != "base" and not qp.is_proj_after_base(i):
+			if operazione != "base" and not qp_draw.is_proj_after_base(i):
 				cand_list = "<span class='as'>" + assegn + "</span>, "
 				cand.remove(assegn)
 				cand_list +=  ", ".join(list(cand))
@@ -215,14 +277,13 @@ def draw_tree(qp, names_set, first):
 	else:
 		html_name = "qp_end.html"
 
+	print("\nWriting file...")
 	out_html = open("./output/" + html_name, "w")
 	out_html.write(end_html)
 	out_html.close()
+	
+	out_path = os.path.abspath("./output")
 
-	print("\nOpening file...")
-	if platform.system() == "Darwin":
-		os.system("open ./output/" + html_name)
-	else:
-		os.system("start ./output/" + html_name)
+	print("\nFile ready to be viewed on " + out_path + "\\" + html_name)
 
 

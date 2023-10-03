@@ -10,7 +10,7 @@ SETS:
    VISIBILITY(ATTRIBUTE, NODE): VP, VE, IP, IE, MVP, MVE, MIP, MIE, IMPL; 
    CANDIDATE(SERVER, NODE): CAND, ASSIGNEE; 
    AUTHS(SERVER, ATTRIBUTE): AUTHP, AUTHE;
-   TOPOLOGY(NODE, NODE): PAR;
+   TOPOLOGY(NODE, NODE): PAR, PARUDF;
    EQUIVALENCE(ATTRIBUTE, ATTRIBUTE, NODE): EQ;
 ENDSETS
 
@@ -19,9 +19,9 @@ DATA:
 ! Istruzioni: QUI FINE PRIMA PARTE DA COPIARE SENZA MODIFICHE NEL FILE ;
 
 ! Istruzioni: DA QUI PER OGNI OCCORRENZA DI @TEXT( ...), INSERIRE IL PATH AL FILE DI OUTPUT;
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITE(@NEWLINE( 1), '************************************',@NEWLINE( 1));
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITE(@NEWLINE( 1), ' *** (The current date and time is:',
        ' ', DAYS( DWK),
        ' ', DA,
@@ -32,23 +32,23 @@ DATA:
 );
 
 ! Print assignments;
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITE(@NEWLINE(1),' *** ASSIGNMENTS :',@NEWLINE(1));
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
     @WRITEFOR( CANDIDATE ( s, n) | ASSIGNEE( s,n) #GT# 0.9 :'',NODE(n),'§', SERVER(s),'§',ASSIGNEE( s,n), '#');
 
 ! Print visible plaintext attributes in nodes;
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITE(@NEWLINE(1),@NEWLINE(1),' *** VISIBLE PLAINTEXT ATTRIBUTES IN NODES :',@NEWLINE(1));
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITEFOR ( VISIBILITY( a,n) |  VP( a,n) #GT# 0.9 : '',NODE(n),'§', ATTRIBUTE(a),'§',' VP:',VP( a,n), '#');
 
 ! Print visible encrypted attributes in nodes;
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITE(@NEWLINE(1),@NEWLINE(1),' *** VISIBLE ENCRYPTED ATTRIBUTES IN NODES :',@NEWLINE(1));
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITEFOR ( VISIBILITY( a,n) |  VE( a,n) #GT# 0.9 : '',NODE(n),'§', ATTRIBUTE(a),'§',' VE:',VE( a,n), '#');
-@TEXT( '§output_file§',a) = 
+@TEXT( './output_script.ltf',a) = 
 @WRITE(@NEWLINE( 1), '************************************',@NEWLINE( 1));
 ! Istruzioni: QUI FINE INSERIMENTO PATH AL FILE DI OUTPUT PER OGNI OCCORRENZA DI @TEXT( ...);
 
@@ -65,28 +65,28 @@ il punto e virgola va messo.;
 
 ATTRIBUTE = S H A D I T V C; 
 SERVER = P M U X Y Z;
-NODE = N1 N2 N3 N4 N5 N6 N7 UNODE;
+NODE = N1 N2 N3 N4 N5 N6 N7 N7_PROJ UNODE;
 
 SIZE = 1 1 2 2 1 2 50 2;
 ENCEFF = 2 2 2 2 2 2 2 2;
 
-ICARD = 100 100 100 100 100 40 40 0;
-OCARD = 100 100 100 100 40 40 40 0; 
+ICARD = 100 100 100 100 150 140 40 4 0;
+OCARD = 100 100 100 100 40 40 4 4 0; 
 
-COMPCOST = 110 100 100 1 2 1; 
-ENCRCOST = 10 1 10 1 1 1; 
-DECRCOST = 10 1 100 1 1 1; 
+COMPCOST = 110 100 1600 1 70 10; 
+ENCRCOST = 1 1 10 1 1 1; 
+DECRCOST = 1 1 100 1 1 1; 
 TRANSFCOST = 11 1 100 1 2 1; 
 
-OPCOST = 0 0 0 0 1 6 5 0; 
-NASIZE = 0 0 0 0 2 4 6 0; 
+OPCOST = 0 0 0 0 2 6 5 0 0; 
+NASIZE = 0 0 0 0 2 4 6 0 0; 
 
 AUTHP = 
-1 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
 1 1 1 1 0 0 0 0
 1 1 0 1 1 0 1 1
 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 1 1
+0 0 0 1 0 0 1 1
 0 0 1 0 1 1 0 1 
 ;
 
@@ -95,150 +95,163 @@ AUTHE =
 0 0 0 0 0 0 0 0
 0 0 1 0 0 1 0 0
 1 1 1 1 1 1 1 1
-1 0 1 1 1 0 0 0
+1 0 1 0 1 0 0 0
 1 1 0 1 0 0 1 0
 ;
 
 CAND = 
-0 1 0 1 1 1 1 0
-1 0 1 0 1 0 0 0
-0 0 0 0 1 1 1 1
-0 0 0 0 1 1 1 0
-0 0 0 0 1 1 1 0
-0 0 0 0 1 0 0 0 
+0 1 0 1 0 0 0 0 0
+1 0 1 0 1 0 0 0 0
+0 0 0 0 1 1 1 1 1
+0 0 0 0 1 1 1 1 0
+0 0 0 0 1 1 1 1 1
+0 0 0 0 1 0 0 0 0 
 ;
 
 MVP = 
-0 0 0 0 0 0 0 1
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 1
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 1
-0 0 0 0 0 0 0 1
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 1
 ;
 
 MVE = 
-1 0 1 0 1 1 1 0
-1 0 0 0 0 0 0 0
-1 0 0 0 0 0 0 0
-1 0 1 0 1 1 1 0
-0 1 0 1 0 1 0 0
-0 1 0 0 0 0 0 0
-0 1 0 1 0 1 1 0
-0 1 0 1 0 1 1 0
+1 0 1 0 1 1 1 0 0
+1 0 0 0 0 0 0 0 0
+1 0 0 0 0 0 0 0 0
+1 0 1 0 1 1 1 0 0
+0 1 0 1 0 1 1 0 0
+0 1 0 0 0 0 0 0 0
+0 1 0 1 0 1 1 0 0
+0 1 0 1 0 1 1 1 0
 ;
 
 MIP = 
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
 ;
 
 MIE = 
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 1 1 1 1
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 1 1 1 1 1
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
 ;
 
 IMPL = 
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 1 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 1 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
 ;
 
 PAR = 
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-1 0 0 0 0 0 0 0
-0 1 0 0 0 0 0 0
-0 0 1 0 0 0 0 0
-0 0 0 1 1 0 0 0
-0 0 0 0 0 1 0 0
-0 0 0 0 0 0 1 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+1 0 0 0 0 0 0 0 0
+0 1 0 0 0 0 0 0 0
+0 0 1 0 0 0 0 0 0
+0 0 0 1 1 0 0 0 0
+0 0 0 0 0 1 0 0 0
+0 0 0 0 0 0 1 0 0
+0 0 0 0 0 0 0 1 0
+;
+
+PARUDF = 
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 1 0 0
+0 0 0 0 0 0 0 0 0
 ;
 
 EQ = 
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 1 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 1 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 1 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 1 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 1 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 1 0 0
+0 0 0 0 0 0 0 0 0
 ;
 
 ENDDATA
@@ -280,7 +293,7 @@ MIN =
 
 ! Istruzioni: QUI INIZIA UNA PARTE DEI VINCOLI DA POPOLARE, le istruzioni sono nei commenti al file;
 ! star node assigned to client ASSIGNEE(server, node);
-ASSIGNEE( 3,8) = 1; 
+ASSIGNEE( 3,9) = 1; 
 
 ! base relations and projections at their owners ASSIGNEE(server, node);
 ASSIGNEE( 1,2) = 1;
@@ -426,6 +439,14 @@ VP( 8,4) = 1;
 			IE( a, n) >= IE( a, m) * PAR( n, m)
 		)
 	)
+);
+
+@FOR( SERVER( s):
+        @FOR( NODE( n):
+                @FOR ( NODE( m):
+                        ASSIGNEE( s,m) * ASSIGNEE( s,n) >= ASSIGNEE( s,m) * PARUDF( m,n)
+                )
+        )
 );
 
  ENDSUBMODEL
